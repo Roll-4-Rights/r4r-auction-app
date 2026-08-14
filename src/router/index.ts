@@ -8,6 +8,7 @@ const routes = [
   { path: '/charity', name: 'CharityInfo', component: () => import('../pages/CharityInfo.vue') },
   { path: '/faq', name: 'Faq', component: () => import('../pages/Faq.vue') },
   { path: '/donators', name: 'DonatorInfo', component: () => import('../pages/DonatorInfo.vue') },
+  { path: '/education', name: 'Education', component: () => import('../pages/EducationResources.vue') },
 ]
 
 export default createRouter({

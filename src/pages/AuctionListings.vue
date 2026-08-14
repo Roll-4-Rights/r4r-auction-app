@@ -1,7 +1,7 @@
 <!-- filepath: c:\Users\gamer\Documents\Roll4Rights\r4r-auction-app\src\pages\AuctionListings.vue -->
 <template>
-  <v-container class="py-8">
-    <h1 class="mb-4">Auction Items</h1>
+<v-container class="py-8">
+    <h1 class="mb-6">Auction Items</h1>
 
     <p v-if="loading">Loading items...</p>
     <p v-else-if="error">{{ error }}</p>
@@ -16,10 +16,19 @@
         lg="3"
       >
         <v-card :to="`/auction/${item.Id}`" elevation="2" class="pa-2">
-          <v-img src="https://placehold.co/400x300?text=Item+Image" height="200" cover />
+          <v-img
+            src="https://placehold.co/400x300?text=Item+Image"
+            height="200"
+            cover
+            class="rounded"
+          />
           <v-card-text class="text-center">
-            <div class="text-h6">${{ item.current_bid }}</div>
-            <div class="text-caption text-medium-emphasis">Current Bid</div>
+            <div class="text-h6" style="color: #103948;">
+              ${{ item.current_bid }}
+            </div>
+            <div class="text-caption text-medium-emphasis">
+              Current Bid
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -29,7 +38,7 @@
       v-if="!loading && !error"
       v-model="currentPage"
       :length="totalPages"
-      class="mt-4"
+      class="mt-6"
     />
   </v-container>
 </template>

@@ -1,28 +1,35 @@
 <template>
-  <v-app-bar>
+  <v-app-bar color="primary" style="position: relative;">
     <div class="header-grid">
       <div class="header-left">
-        <v-toolbar-title>Roll4Rights Auction</v-toolbar-title>
+        <v-btn icon="mdi-magnify" variant="text" class="text-white" @click="onSearchClick" />
       </div>
 
       <div class="header-center">
-        <v-btn to="/">Home</v-btn>
-        <v-btn to="/auction">Auction</v-btn>
-        <v-btn to="/charity">Charity Info</v-btn>
-        <v-btn to="/faq">FAQ</v-btn>
-        <v-btn to="/donators">Donator Information</v-btn>
+        <v-btn to="/" variant="text" class="text-white">Home</v-btn>
+        <v-btn to="/auction" variant="text" class="text-white">Auction</v-btn>
+        <v-btn to="/charity" variant="text" class="text-white">Charity Info</v-btn>
+        <v-btn to="/donators" variant="text" class="text-white">Donators</v-btn>
+        <v-btn to="/education" variant="text" class="text-white">Education & Resources</v-btn>
       </div>
 
       <div class="header-right">
-        <v-btn to="/account">Login</v-btn>
+        <v-btn to="/account" icon="mdi-account" variant="text" class="text-white" />
+        <v-btn href="#" variant="tonal" color="white" class="text-primary">Donate</v-btn>
       </div>
     </div>
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
-</script>
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
+function onSearchClick() {
+  router.push('/auction')
+}
+</script>
 
 <style scoped>
 .header-grid {
