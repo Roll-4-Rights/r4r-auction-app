@@ -20,15 +20,55 @@
         Welcome to the {{ campaignName }} Charity Auction by Roll4Rights!
       </h1>
     </v-container>
+
+    <v-container class="text-center py-4">
+      <DragonProgressTracker
+        :total="progress.total"
+        :current-milestone="progress.currentMilestone"
+        :next-milestone="progress.nextMilestone"
+      />
+    </v-container>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { apiService } from '@/services/api'
+import DragonProgressTracker from '@/components/DragonProgressTracker.vue'
 
 // Placeholder values until Campaign Settings table is wired up
 const campaignTitle = ref('Campaign Title Goes Here')
 const campaignName = ref('Campaign Name')
+
+const progress = ref({
+  total: 0,
+  currentMilestone: 0,
+  nextMilestone: 10000
+})
+
+let pollHandle: ReturnType<typeof setInterval> | null = null
+
+const refreshProgress = async () => {
+  try {
+    const data = await apiService.fetchCampaignProgress()
+    progress.value = {
+      total: data.total,
+      currentMilestone: data.currentMilestone,
+      nextMilestone: data.nextMilestone
+    }
+  } catch (err) {
+    console.error('Failed to refresh campaign progress:', err)
+  }
+}
+
+onMounted(() => {
+  refreshProgress()
+  pollHandle = setInterval(refreshProgress, 20000)
+})
+
+onUnmounted(() => {
+  if (pollHandle) clearInterval(pollHandle)
+})
 </script>
 
 <style scoped>
