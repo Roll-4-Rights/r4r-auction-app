@@ -7,6 +7,7 @@
 
       <div class="header-center">
         <v-btn to="/" variant="text" class="text-white">Home</v-btn>
+        <v-btn to="/current-campaign" variant="text" class="text-white">Current Campaign</v-btn>
         <v-btn to="/auction" variant="text" class="text-white">Auction</v-btn>
         <v-btn to="/charity" variant="text" class="text-white">Charity Info</v-btn>
         <v-btn to="/donators" variant="text" class="text-white">Donators</v-btn>
