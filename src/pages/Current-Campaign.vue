@@ -33,7 +33,7 @@
           <div>
             <p class="text-caption text-medium-emphasis mb-0">Benefiting</p>
             <p class="text-h6 font-weight-bold text-black mb-0">
-              {{ campaign.charityName || 'some charity' }}
+              {{ campaign.charityName || 'No charity selected yet' }}
             </p>
             <a
               v-if="campaign.charityWebsite"
@@ -58,11 +58,11 @@
         <v-row class="mb-6" no-gutters>
           <v-col cols="6">
             <p class="text-caption text-medium-emphasis mb-0">Starts</p>
-            <p class="text-subtitle-2 font-weight-bold text-black">{{ campaign.startDate || 'TBD' }}</p>
+            <p class="text-subtitle-2 font-weight-bold text-black">{{ formattedStartDate }}</p>
           </v-col>
           <v-col cols="6">
             <p class="text-caption text-medium-emphasis mb-0">Ends</p>
-            <p class="text-subtitle-2 font-weight-bold text-black">{{ campaign.endDate || 'TBD' }}</p>
+            <p class="text-subtitle-2 font-weight-bold text-black">{{ formattedEndDate }}</p>
           </v-col>
         </v-row>
 
@@ -93,13 +93,26 @@
         <!-- Call to Action -->
         <div class="d-flex justify-end">
           <v-btn
+            v-if="campaign.charityWebsite"
             color="#0B4F6C"
             variant="flat"
             size="large"
             class="text-none font-weight-bold rounded-lg px-8 py-2 text-white"
-            @click="handleViewAuctionItems"
+            :href="campaign.charityWebsite"
+            target="_blank"
+            rel="noopener"
           >
-            Link to charity
+            Visit {{ campaign.charityName || 'Charity' }}
+          </v-btn>
+          <v-btn
+            v-else
+            color="grey-lighten-1"
+            variant="flat"
+            size="large"
+            class="text-none font-weight-bold rounded-lg px-8 py-2"
+            disabled
+          >
+            Charity link not set yet
           </v-btn>
         </div>
 
@@ -109,12 +122,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { apiService } from '@/services/api'
 import DragonProgressTracker from '@/components/DragonProgressTracker.vue'
 
-// TODO: replace this whole object with real campaign data — an API call,
-// a CMS fetch, a Firestore doc, whatever this project ends up using.
 interface Campaign {
   name: string
   tagline: string
@@ -137,10 +148,23 @@ const campaign = ref<Campaign>({
   endDate: ''
 })
 
-const progressPercent = computed(() => {
-  if (!campaign.value.goalAmount) return 0
-  return Math.min(100, (campaign.value.raisedAmount / campaign.value.goalAmount) * 100)
-})
+// Start Date / End Date are now full datetimes (charity runs end at a specific time),
+// so format them for display rather than showing the raw ISO string.
+const formatDateTime = (value: string) => {
+  if (!value) return 'TBD'
+  const parsed = new Date(value)
+  if (isNaN(parsed.getTime())) return 'TBD'
+  return parsed.toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  })
+}
+
+const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
+const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
 
 const formattedGoal = computed(() =>
   campaign.value.goalAmount ? `$${campaign.value.goalAmount.toLocaleString()}` : 'TBD'
@@ -169,7 +193,16 @@ const refreshProgress = async () => {
   }
 }
 
+const loadCampaignInfo = async () => {
+  try {
+    campaign.value = await apiService.fetchCampaignInfo()
+  } catch (err) {
+    console.error('Failed to load campaign info:', err)
+  }
+}
+
 onMounted(() => {
+  loadCampaignInfo()
   refreshProgress()
   pollHandle = setInterval(refreshProgress, 20000)
 })
@@ -177,9 +210,4 @@ onMounted(() => {
 onUnmounted(() => {
   if (pollHandle) clearInterval(pollHandle)
 })
-
-// TODO: point this at wherever the auction items live (route or anchor link)
-const handleViewAuctionItems = () => {
-  console.log('Navigate to auction items')
-}
 </script>

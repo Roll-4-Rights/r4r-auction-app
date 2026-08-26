@@ -6,6 +6,7 @@ const routes = [
   { path: '/auction/:id', name: 'ItemDetail', component: () => import('../pages/ItemDetail.vue') },
   { path: '/account', name: 'Account', component: () => import('../pages/Account.vue') },
   { path: '/charity', name: 'CharityInfo', component: () => import('../pages/CharityInfo.vue') },
+  { path: '/current-campaign', name: 'CurrentCampaign', component: () => import('../pages/current-campaign.vue') },
   { path: '/faq', name: 'Faq', component: () => import('../pages/Faq.vue') },
   { path: '/donators', name: 'DonatorInfo', component: () => import('../pages/DonatorInfo.vue') },
   { path: '/education', name: 'Education', component: () => import('../pages/EducationResources.vue') },
