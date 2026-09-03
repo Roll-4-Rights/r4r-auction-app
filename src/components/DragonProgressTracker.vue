@@ -1,5 +1,5 @@
 <!-- filepath: c:\Users\gamer\Documents\Roll4Rights\r4r-auction-app\src\components\DragonProgressTracker.vue -->
-<!-- <template>
+<template>
   <div class="dragon-tracker">
     <svg viewBox="0 0 300 200" class="dragon-svg" :class="`stage-${stage}`">
       <defs>
@@ -7,11 +7,11 @@
           <stop offset="0%" stop-color="#ff8a3d" :stop-opacity="glowOpacity" />
           <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0" />
         </radialGradient>
-      </defs> -->
-<!-- 
+      </defs>
+
       <ellipse cx="150" cy="162" rx="130" ry="42" fill="url(#emberGlow)" class="ember" />
 
-      Curled tail
+      <!-- Curled tail -->
       <path
         d="M55,150 Q30,130 40,105 Q50,85 75,90 Q60,110 70,130 Q78,142 95,148 Z"
         fill="#33424f"
@@ -19,40 +19,40 @@
       />
 
       <!-- Body -->
-      <!-- <path
+      <path
         d="M65,148 Q90,80 175,88 Q235,93 248,138 Q205,162 150,157 Q100,162 65,148 Z"
         fill="#3a4a5a"
         class="body-shape"
-      /> -->
+      />
 
       <!-- Wing — moved AFTER body so it renders on top, made larger + fan-shaped -->
-      <!-- <path
+      <path
         d="M160,90 Q180,35 235,30 Q260,45 250,75 Q235,60 210,68 Q225,85 210,100 Q190,85 175,95 Z"
         fill="#2c3a47"
         stroke="#1c2732"
         stroke-width="1.5"
         class="wing"
-      /> -->
+      />
 
       <!-- Head / snout -->
-      <!-- <path
+      <path
         d="M175,88 Q212,82 232,100 Q222,112 205,110 Q188,108 175,98 Z"
         fill="#3f5060"
         class="head-shape"
-      /> -->
+      />
 
       <!-- Wing -->
-      <!-- <path
+      <path
         d="M170,92 Q205,52 252,72 Q222,96 178,96 Z"
         fill="#2c3a47"
         class="wing"
-      /> -->
+      />
 
-      <!-- Eye
+      <!-- Eye -->
       <circle cx="212" cy="98" r="3.5" class="eye" :class="{ open: stage >= 1 }" />
 
       <!-- Smoke wisp, fades in at stage 2+ -->
-      <!-- <path
+      <path
         d="M228,92 Q234,84 230,76 Q238,80 236,68"
         stroke="#ffb15c"
         stroke-width="2"
@@ -60,9 +60,9 @@
         stroke-linecap="round"
         class="smoke"
       />
-    </svg> -->
+    </svg>
 
-    <!-- <div class="dragon-caption">
+    <div class="dragon-caption">
       <p class="milestone-label">${{ formattedTotal }} raised</p>
       <p class="milestone-sub" v-if="stage < maxStage">
         ${{ formattedRemaining }} until the dragon stirs again...
@@ -170,4 +170,4 @@ const formattedRemaining = computed(() =>
   color: #d9822b;
   font-weight: 600;
 }
-</style> -->
+</style>
