@@ -1,5 +1,5 @@
 <!-- filepath: c:\Users\gamer\Documents\Roll4Rights\r4r-auction-app\src\components\DragonProgressTracker.vue -->
-<template>
+<!-- <template>
   <div class="dragon-tracker">
     <svg viewBox="0 0 300 200" class="dragon-svg" :class="`stage-${stage}`">
       <defs>
@@ -7,7 +7,7 @@
           <stop offset="0%" stop-color="#ff8a3d" :stop-opacity="glowOpacity" />
           <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0" />
         </radialGradient>
-      </defs>
+      </defs> -->
 <!-- 
       <ellipse cx="150" cy="162" rx="130" ry="42" fill="url(#emberGlow)" class="ember" />
 
@@ -62,7 +62,7 @@
       />
     </svg> -->
 
-    <div class="dragon-caption">
+    <!-- <div class="dragon-caption">
       <p class="milestone-label">${{ formattedTotal }} raised</p>
       <p class="milestone-sub" v-if="stage < maxStage">
         ${{ formattedRemaining }} until the dragon stirs again...
@@ -170,4 +170,4 @@ const formattedRemaining = computed(() =>
   color: #d9822b;
   font-weight: 600;
 }
-</style>
+</style> -->
