@@ -10,6 +10,9 @@ const routes = [
   { path: '/faq', name: 'Faq', component: () => import('../pages/faq.vue') },
   { path: '/donators', name: 'DonatorInfo', component: () => import('../pages/donator-info.vue') },
   { path: '/education', name: 'Education', component: () => import('../pages/education-resources.vue') },
+  { path: '/login', name: 'BidderLogin', component: () => import('../pages/bidder-login.vue') },
+  { path: '/login/verify', name: 'LoginVerify', component: () => import('../pages/login-verify.vue') },
+  { path: '/claim/:token', name: 'WinnerClaim', component: () => import('../pages/winner-claim.vue') },
 ]
 
 export default createRouter({

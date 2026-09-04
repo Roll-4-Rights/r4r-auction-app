@@ -9,13 +9,13 @@
     <v-row v-else>
       <v-col
         v-for="item in items"
-        :key="item.Id"
+        :key="item.id"
         cols="12"
         sm="6"
         md="4"
         lg="3"
       >
-        <v-card :to="`/auction/${item.Id}`" elevation="2" class="pa-2">
+        <v-card :to="`/auction/${item.id}`" elevation="2" class="pa-2">
           <v-img
             src="https://placehold.co/400x300?text=Item+Image"
             height="200"
@@ -29,6 +29,24 @@
             <div class="text-caption text-medium-emphasis">
               Current Bid
             </div>
+            <v-chip
+              v-if="item.can_bid === false"
+              size="small"
+              color="error"
+              variant="tonal"
+              class="mt-2"
+            >
+              Can't ship to your country
+            </v-chip>
+            <v-chip
+              v-else-if="item.can_bid === null"
+              size="small"
+              color="warning"
+              variant="tonal"
+              class="mt-2"
+            >
+              Sign in to bid
+            </v-chip>
           </v-card-text>
         </v-card>
       </v-col>
@@ -45,6 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
+import { apiFetch } from '../api'
 
 const items = ref<any[]>([])
 const loading = ref(true)
@@ -62,12 +81,11 @@ async function fetchItems() {
   loading.value = true
   try {
     const offset = (currentPage.value - 1) * pageSize
-    const url = `${import.meta.env.VITE_API_URL}/api/auction/items?limit=${pageSize}&offset=${offset}`
-    const response = await fetch(url)
+    const response = await apiFetch(`/api/auction/items?limit=${pageSize}&offset=${offset}`)
     const data = await response.json()
 
     items.value = data.list
-    totalRows.value = data.pageInfo.totalRows
+    totalRows.value = data.pageInfo?.totalRows ?? 0
   } catch (err) {
     error.value = 'Failed to load items.'
     console.error(err)
