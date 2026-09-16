@@ -66,14 +66,16 @@
           </v-col>
         </v-row>
 
-        <!-- Fundraising Goal + Progress -->
+        <!-- Raised total + progress toward next dragon awakening -->
         <div class="mb-8">
           <div class="d-flex justify-space-between mb-2">
             <p class="text-caption text-medium-emphasis mb-0">{{ formattedRaised }} raised</p>
-            <p class="text-caption text-medium-emphasis mb-0">Goal: {{ formattedGoal }}</p>
+            <p class="text-caption text-medium-emphasis mb-0">
+              Next awakening at {{ formattedNextMilestone }}
+            </p>
           </div>
           <v-progress-linear
-            :model-value="progressPercent"
+            :model-value="progress.progressWithinMilestone * 100"
             height="10"
             rounded
             color="#0B4F6C"
@@ -81,7 +83,7 @@
           ></v-progress-linear>
         </div>
 
-        <!-- Progress Tracker -->
+        <!-- Dragon Progress Tracker — animation state changes at each $10k milestone -->
         <DragonProgressTracker
           :total="progress.total"
           :current-milestone="progress.currentMilestone"
@@ -148,8 +150,6 @@ const campaign = ref<Campaign>({
   endDate: ''
 })
 
-// Start Date / End Date are now full datetimes (charity runs end at a specific time),
-// so format them for display rather than showing the raw ISO string.
 const formatDateTime = (value: string) => {
   if (!value) return 'TBD'
   const parsed = new Date(value)
@@ -166,16 +166,14 @@ const formatDateTime = (value: string) => {
 const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
 const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
 
-const formattedGoal = computed(() =>
-  campaign.value.goalAmount ? `$${campaign.value.goalAmount.toLocaleString()}` : 'TBD'
-)
-
-const formattedRaised = computed(() => `$${campaign.value.raisedAmount.toLocaleString()}`)
+const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
+const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
 
 const progress = ref({
   total: 0,
   currentMilestone: 0,
-  nextMilestone: 10000
+  nextMilestone: 10000,
+  progressWithinMilestone: 0
 })
 
 let pollHandle: ReturnType<typeof setInterval> | null = null
@@ -186,7 +184,8 @@ const refreshProgress = async () => {
     progress.value = {
       total: data.total,
       currentMilestone: data.currentMilestone,
-      nextMilestone: data.nextMilestone
+      nextMilestone: data.nextMilestone,
+      progressWithinMilestone: data.progressWithinMilestone
     }
   } catch (err) {
     console.error('Failed to refresh campaign progress:', err)

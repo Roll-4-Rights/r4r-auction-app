@@ -2,7 +2,7 @@
   <v-app>
     <CountdownBar v-if="campaignEndTime" :end-time="campaignEndTime" />
     <AnnouncementBar />
-    <AppHeader />
+    <SiteHeader />
     <v-main>
       <router-view />
     </v-main>
@@ -13,18 +13,23 @@
 import { ref, onMounted } from 'vue'
 import CountdownBar from './components/CountdownBar.vue'
 import AnnouncementBar from './components/AnnouncementBar.vue'
-import AppHeader from './components/AppHeader.vue'
+import SiteHeader from './components/SiteHeader.vue'
 
 const campaignEndTime = ref('')
 
 async function fetchCampaignSettings() {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/campaign`
-    const response = await fetch(url)
-    const data = await response.json()
+    const res = await fetch(url)
+    const data = await res.json()
 
-    // Assumes single-row table, grabbing the first record
-    campaignEndTime.value = data.list[0]?.auction_end_time ?? ''
+    if (data.error) {
+      console.error('Campaign settings error:', data.error)
+      return
+    }
+
+    const records = data.list ?? []
+    campaignEndTime.value = records[0]?.['Auction End Time'] ?? ''
   } catch (err) {
     console.error('Failed to load campaign settings', err)
   }

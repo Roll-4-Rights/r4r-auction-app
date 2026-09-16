@@ -58,7 +58,7 @@ async function submit() {
     if (!response.ok) {
       if (data.error === 'Country is required for first-time bidders') {
         showCountry.value = true
-        error.value = 'Looks like this is your first time — please select your country too.'
+        error.value = 'Welcome! Please select your country too.'
       } else {
         error.value = data.error || 'Something went wrong.'
       }
