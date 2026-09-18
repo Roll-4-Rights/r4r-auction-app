@@ -8,6 +8,8 @@
       </div>
     </div>
 
+    <!-- Countdown Bar component right here -->
+    <CountdownBar :start-time="campaignStart" :end-time="campaignEnd" />
 
     <!-- Welcome heading + intro -->
     <v-container class="text-center welcome-section">
@@ -87,10 +89,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import fallbackHeroImage from '@/assets/Hero_Sized_big.jpg'
+import CountdownBar from '@/components/CountdownBar.vue' 
 
 const router = useRouter()
 
 const campaignName = ref('Roll4Rights')
+const campaignStart = ref('') 
+const campaignEnd = ref('')  
 const heroImage = ref(fallbackHeroImage)
 const introParagraph = ref('intro paragraph')
 
@@ -174,15 +179,13 @@ async function fetchSiteContent() {
 
 async function fetchCampaignSettings() {
   try {
-    const url = `${import.meta.env.VITE_API_URL}/api/campaign`
+    const url = `${import.meta.env.VITE_API_URL}/api/campaign-info`
     const res = await fetch(url)
     const data = await res.json()
     
-    const content = Array.isArray(data.list) ? (data.list[0] ?? {}) : (data ?? {})
-    
-    if (content['Campaign Name']) {
-      campaignName.value = content['Campaign Name']
-    }
+    if (data.name) campaignName.value = data.name
+    if (data.startDate) campaignStart.value = data.startDate
+    if (data.endDate) campaignEnd.value = data.endDate
   } catch (err) {
     console.error('Failed to load campaign settings', err)
   }
