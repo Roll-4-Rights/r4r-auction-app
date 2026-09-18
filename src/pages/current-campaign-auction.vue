@@ -70,9 +70,9 @@
         <div class="mb-8">
           <div class="d-flex justify-space-between mb-2">
             <p class="text-caption text-medium-emphasis mb-0">{{ formattedRaised }} raised</p>
-            <p class="text-caption text-medium-emphasis mb-0">
-              Next awakening at {{ formattedNextMilestone }}
-            </p>
+            <!-- <p class="text-caption text-medium-emphasis mb-0">
+               {{ formattedNextMilestone }}
+            </p> -->
           </div>
           <v-progress-linear
             :model-value="progress.progressWithinMilestone * 100"
@@ -167,7 +167,7 @@ const formatDateTime = (value: string) => {
 const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
 const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
 const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
-const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
+// const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
 
 let pollHandle: ReturnType<typeof setInterval> | null = null
 
