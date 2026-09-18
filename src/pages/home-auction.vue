@@ -8,8 +8,6 @@
       </div>
     </div>
 
-    <!-- Countdown Bar component right here -->
-    <CountdownBar :start-time="campaignStart" :end-time="campaignEnd" />
 
     <!-- Welcome heading + intro -->
     <v-container class="text-center welcome-section">
@@ -89,7 +87,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import fallbackHeroImage from '@/assets/Hero_Sized_big.jpg'
-import CountdownBar from '@/components/CountdownBar.vue' 
 
 const router = useRouter()
 
