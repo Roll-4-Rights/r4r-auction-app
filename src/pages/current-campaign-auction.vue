@@ -12,10 +12,10 @@
         <!-- Campaign Header -->
         <div class="text-left mb-8">
           <p class="text-caption font-weight-bold text-uppercase text-medium-emphasis mb-1" style="letter-spacing: 0.08em;">
-            Current Campaign!
+            Welcome, traveler! Thank you for joining us in support of the 
           </p>
           <h1 class="text-h4 font-weight-black text-black mb-2">
-            {{ campaign.name || 'Campaign name here' }}
+            {{ campaign.name || 'Campaign Name' }}
           </h1>
           <p class="text-subtitle-1 text-medium-emphasis">
             {{ campaign.tagline || 'some info here.' }}
@@ -104,7 +104,7 @@
             target="_blank"
             rel="noopener"
           >
-            Visit {{ campaign.charityName || 'Charity' }}
+            {{ campaign.charityName || 'Charity' }}
           </v-btn>
           <v-btn
             v-else
@@ -123,9 +123,13 @@
   </v-container>
 </template>
 
+
+
+
+
+
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { apiService } from '@/services/api'
 import DragonProgressTracker from '@/components/DragonProgressTracker.vue'
 
 interface Campaign {
@@ -140,34 +144,9 @@ interface Campaign {
 }
 
 const campaign = ref<Campaign>({
-  name: '',
-  tagline: '',
-  charityName: '',
-  charityLogoUrl: '',
-  charityWebsite: '',
-  charityDescription: '',
-  startDate: '',
-  endDate: ''
+  name: '', tagline: '', charityName: '', charityLogoUrl: '',
+  charityWebsite: '', charityDescription: '', startDate: '', endDate: ''
 })
-
-const formatDateTime = (value: string) => {
-  if (!value) return 'TBD'
-  const parsed = new Date(value)
-  if (isNaN(parsed.getTime())) return 'TBD'
-  return parsed.toLocaleString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-  })
-}
-
-const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
-const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
-
-const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
-const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
 
 const progress = ref({
   total: 0,
@@ -176,11 +155,29 @@ const progress = ref({
   progressWithinMilestone: 0
 })
 
+const formatDateTime = (value: string) => {
+  if (!value) return 'TBD'
+  const parsed = new Date(value)
+  if (isNaN(parsed.getTime())) return 'TBD'
+  return parsed.toLocaleString(undefined, {
+    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
+  })
+}
+
+const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
+const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
+const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
+const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
+
 let pollHandle: ReturnType<typeof setInterval> | null = null
 
+// Hits Flask progress route
 const refreshProgress = async () => {
   try {
-    const data = await apiService.fetchCampaignProgress()
+    const url = `${import.meta.env.VITE_API_URL}/api/campaign-progress`
+    const res = await fetch(url)
+    const data = await res.json()
+    
     progress.value = {
       total: data.total,
       currentMilestone: data.currentMilestone,
@@ -192,9 +189,12 @@ const refreshProgress = async () => {
   }
 }
 
+// Hits flat Flask metadata route
 const loadCampaignInfo = async () => {
   try {
-    campaign.value = await apiService.fetchCampaignInfo()
+    const url = `${import.meta.env.VITE_API_URL}/api/campaign-info`
+    const res = await fetch(url)
+    campaign.value = await res.json()
   } catch (err) {
     console.error('Failed to load campaign info:', err)
   }
@@ -203,7 +203,7 @@ const loadCampaignInfo = async () => {
 onMounted(() => {
   loadCampaignInfo()
   refreshProgress()
-  pollHandle = setInterval(refreshProgress, 20000)
+  pollHandle = setInterval(refreshProgress, 20000) // Poll for donation updates
 })
 
 onUnmounted(() => {

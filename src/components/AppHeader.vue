@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar color="primary" style="position: relative;">
-    <div class="header-grid">
+<v-app-bar color="primary" height="80" style="position: relative;">
+      <div class="header-grid">
       <div class="header-left">
         <v-btn icon="mdi-magnify" variant="text" class="text-white" @click="onSearchClick" />
       </div>
@@ -38,6 +38,7 @@ function onSearchClick() {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: 100%;
+  height: 100%;
   padding: 0 var(--header-side-padding, 32px);
 }
 

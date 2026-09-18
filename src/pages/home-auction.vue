@@ -1,9 +1,13 @@
 <template>
   <div class="home-page">
+
     <!-- Hero image -->
-    <div class="hero-section">
-      <v-img :src="heroImage" height="500" cover class="hero-image" />
+    <div class="hero-section">      <!-- The rigid  frame -->
+      <div class="pan-container">  <!-- Fit the frame  -->
+        <img :src="heroImage" alt="Panning photo" class="pan-image"> <!-- The sliding picture -->
+      </div>
     </div>
+
 
     <!-- Welcome heading + intro -->
     <v-container class="text-center welcome-section">
@@ -69,11 +73,15 @@
         />
       </div>
       <div class="footer-copy">
-        {{ footerCopy || `© ${currentYear}, Roll4Rights Powered by Shopify · Privacy policy` }}
+        {{ footerCopy || `© ${currentYear}, Roll4Rights · Privacy policy` }}
       </div>
     </footer>
   </div>
 </template>
+
+
+
+
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
@@ -83,9 +91,7 @@ import fallbackHeroImage from '@/assets/Hero_Sized_big.jpg'
 const router = useRouter()
 
 const campaignName = ref('Roll4Rights')
-
 const heroImage = ref(fallbackHeroImage)
-
 const introParagraph = ref('intro paragraph')
 
 const bodyParagraphs = ref([
@@ -110,7 +116,7 @@ function goToPastAuctions() {
 
 const country = ref('us')
 const countryOptions = [
-  { label: 'United States | USD $', value: 'us' },
+  { label: 'United States | USD \$', value: 'us' },
 ]
 
 const currentYear = computed(() => new Date().getFullYear())
@@ -120,33 +126,121 @@ async function fetchSiteContent() {
     const url = `${import.meta.env.VITE_API_URL}/api/site-content`
     const res = await fetch(url)
     const data = await res.json()
-    console.log('site-content response:', data) // TEMP - remove after verifying
+    console.log('site-content response:', data)
 
-    if (data['Hero Image']?.[0]?.url) heroImage.value = data['Hero Image'][0].url
-    if (data['Intro Paragraph']) introParagraph.value = data['Intro Paragraph']
-    if (data['Body Paragraph 1'] || data['Body Paragraph 2']) {
-      bodyParagraphs.value = [data['Body Paragraph 1'], data['Body Paragraph 2']].filter(Boolean)
+    if (data.error) {
+      console.error('Site content error:', data.error)
+      return
     }
-    if (data['Cta Button Text']) ctaText.value = data['Cta Button Text']
-    if (data['Social Instagram Url']) instagramUrl.value = data['Social Instagram Url']
-    if (data['Social Bluesky Url']) blueskyUrl.value = data['Social Bluesky Url']
-    if (data['Footer Copy']) footerCopy.value = data['Footer Copy']
+  
+    // Properly tracks index [0] of data.list or handles flat objects
+    const content = Array.isArray(data.list) ? (data.list[0] ?? {}) : (data ?? {})
+
+    const rawHeroImage = content['Hero Image']
+    if (rawHeroImage) {
+      if (Array.isArray(rawHeroImage) && rawHeroImage.length > 0) {
+        const attachment = rawHeroImage[0]
+        const rawUrl = attachment.url || attachment.signedUrl || attachment.path
+        
+        if (rawUrl) {
+          if (rawUrl.startsWith('http')) {
+            heroImage.value = rawUrl
+          } else if (rawUrl.startsWith('/')) {
+            heroImage.value = `http://localhost:8080${rawUrl}`
+          } else {
+            // Forces local NocoDB upload paths (like noco/...) to load via port 8080
+            heroImage.value = `http://localhost:8080/${rawUrl}`
+          }
+        }
+      } else if (typeof rawHeroImage === 'string') {
+        const matchStr = rawHeroImage.match(/https?:\/\/[^\s)]+/)
+        heroImage.value = matchStr ? matchStr[0] : fallbackHeroImage
+      }
+    }
+  
+    if (content['Intro Paragraph']) introParagraph.value = content['Intro Paragraph']
+    if (content['Body Paragraph 1'] || content['Body Paragraph 2']) {
+      bodyParagraphs.value = [content['Body Paragraph 1'], content['Body Paragraph 2']].filter(Boolean)
+    }
+    if (content['Cta Button Text']) ctaText.value = content['Cta Button Text']
+    if (content['Social Instagram Url']) instagramUrl.value = content['Social Instagram Url']
+    if (content['Social Bluesky Url']) blueskyUrl.value = content['Social Bluesky Url']
+    if (content['Footer Copy']) footerCopy.value = content['Footer Copy']
   } catch (err) {
     console.error('Failed to load site content', err)
+    heroImage.value = fallbackHeroImage
   }
 }
 
-onMounted(fetchSiteContent)
+async function fetchCampaignSettings() {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/api/campaign`
+    const res = await fetch(url)
+    const data = await res.json()
+    
+    const content = Array.isArray(data.list) ? (data.list[0] ?? {}) : (data ?? {})
+    
+    if (content['Campaign Name']) {
+      campaignName.value = content['Campaign Name']
+    }
+  } catch (err) {
+    console.error('Failed to load campaign settings', err)
+  }
+}
+
+onMounted(() => {
+  fetchSiteContent()
+  fetchCampaignSettings()
+})
 </script>
+
+
+
+
+
+
 
 <style scoped>
 .home-page {
   background: #f2ece1;
 }
 
-/* Hero */
+/* 🎥 Hero Section & Pan Animation Frame */
 .hero-section {
   width: 100%;
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate; 
+}
+
+.pan-container {
+  width: 100%;
+  height: 100%;
+}
+
+.pan-image {
+  width: 115%; /* 15% extra width padding to slide across */
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  right: 0; /* Forces the animation to slide right first */
+  
+  animation: smoothPan 28s linear infinite alternate; 
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes smoothPan {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(13%, 0, 0); 
+  }
 }
 
 /* Welcome section */
@@ -217,7 +311,7 @@ onMounted(fetchSiteContent)
   color: #163a47;
 }
 
-/* Footer */
+/* Footer Layout (Fixed the backslash typo) */
 .site-footer {
   display: flex;
   flex-direction: column;
