@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <CountdownBar v-if="campaignEndTime" :end-time="campaignEndTime" />
+    <CountdownBar 
+    :start-time="campaignStartTime" 
+    :end-time="campaignEndTime" 
+    />
     <AnnouncementBar />
     <SiteHeader />
     <v-main>
@@ -9,17 +12,24 @@
   </v-app>
 </template>
 
+
+
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import CountdownBar from './components/CountdownBar.vue'
 import AnnouncementBar from './components/AnnouncementBar.vue'
 import SiteHeader from './components/SiteHeader.vue'
 
+
+const campaignStartTime = ref('')
 const campaignEndTime = ref('')
+
+
 
 async function fetchCampaignSettings() {
   try {
-    const url = `${import.meta.env.VITE_API_URL}/api/campaign`
+    const url = `${import.meta.env.VITE_API_URL}/api/campaign-info`
     const res = await fetch(url)
     const data = await res.json()
 
@@ -29,11 +39,13 @@ async function fetchCampaignSettings() {
     }
 
     const records = data.list ?? []
+    campaignStartTime.value = records[0]?.['Auction Start Time'] ?? ''
     campaignEndTime.value = records[0]?.['Auction End Time'] ?? ''
   } catch (err) {
     console.error('Failed to load campaign settings', err)
   }
 }
+
 
 onMounted(() => {
   fetchCampaignSettings()

@@ -16,10 +16,10 @@
     <div class="dragon-caption">
       <p class="milestone-label">${{ formattedTotal }} raised</p>
       <p class="milestone-sub" v-if="stage < maxStage">
-        ${{ formattedRemaining }} until the dragon stirs again...
+        ${{ formattedRemaining }} until the dragon grows again...
       </p>
       <p class="milestone-sub awake" v-else>
-        The dragon is fully awake!
+        The dragon is fully grown!
       </p>
     </div>
   </div>
@@ -28,14 +28,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-// TODO: swap these placeholders for the artist's final delivered files
-// (same filenames, dropped into src/assets/dragon/, and this import list
-// won't need to change at all).
-// import stage0 from '@/assets/dragon/stage-0.png'
-// import stage1 from '@/assets/dragon/stage-1.png'
-// import stage2 from '@/assets/dragon/stage-2.png'
-// import stage3 from '@/assets/dragon/stage-3.png'
-// import stage4 from '@/assets/dragon/stage-4.png'
+// TODO: swap these placeholders for the artist's final delivered files (if use same filenames, dropped into src/assets/dragon/, this import list won't need to change at all).
+import stage1 from '@/assets/dragon/stage-1.png'
+import stage2 from '@/assets/dragon/stage-2.png'
+import stage3 from '@/assets/dragon/stage-3.png'
+import stage4 from '@/assets/dragon/stage-4.png'
 
 const props = defineProps<{
   total: number
@@ -46,7 +43,7 @@ const props = defineProps<{
 const maxStage = 4
 const milestoneStep = 10000
 
-const stageImages = [stage0, stage1, stage2, stage3, stage4]
+const stageImages = [stage1, stage2, stage3, stage4]
 
 const stage = computed(() =>
   Math.min(Math.floor(props.currentMilestone / milestoneStep), maxStage)
