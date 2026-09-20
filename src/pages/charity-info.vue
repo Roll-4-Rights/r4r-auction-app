@@ -91,17 +91,17 @@
 
         <!-- Call to Action -->
         <div class="d-flex justify-end">
-          <v-btn
-            v-if="campaign.charityWebsite"
+                    <v-btn
+            v-if="campaign.charityDonateLink"
             color="#0B4F6C"
             variant="flat"
             size="large"
             class="text-none font-weight-bold rounded-lg px-8 py-2 text-white"
-            :href="campaign.charityWebsite"
+            :href="campaign.charityDonateLink"
             target="_blank"
             rel="noopener"
           >
-            Visit {{ campaign.charityName || 'Charity' }}
+            Donate to {{ campaign.charityName || 'the Charity' }}
           </v-btn>
           <v-btn
             v-else
@@ -111,7 +111,7 @@
             class="text-none font-weight-bold rounded-lg px-8 py-2"
             disabled
           >
-            Charity link not set yet
+            Donate link not set yet
           </v-btn>
         </div>
 
@@ -134,6 +134,7 @@ interface Campaign {
   charityName: string
   charityLogoUrl: string
   charityWebsite: string
+  charityDonateLink: string
   charityDescription: string
   startDate: string
   endDate: string
@@ -141,7 +142,7 @@ interface Campaign {
 
 const campaign = ref<Campaign>({
   name: '', tagline: '', charityName: '', charityLogoUrl: '',
-  charityWebsite: '', charityDescription: '', startDate: '', endDate: ''
+  charityWebsite: '', charityDonateLink: '',charityDescription: '', startDate: '', endDate: ''
 })
 
 const progress = ref({
@@ -153,8 +154,7 @@ const progress = ref({
 
 const contentReady = ref(false)
 
-// Dates are full datetimes, so format them for display. The .replace makes
-// NocoDB's date format readable in every browser (including Safari).
+// Dates are full datetimes, so format them for display. The .replace makes NocoDB's date format readable in every browser (including Safari).
 const formatDateTime = (value: string) => {
   if (!value) return 'TBD'
   const parsed = new Date(value.replace(' ', 'T'))
