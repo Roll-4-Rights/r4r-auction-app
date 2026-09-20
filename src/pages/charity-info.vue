@@ -91,17 +91,17 @@
 
         <!-- Call to Action -->
         <div class="d-flex justify-end">
-                    <v-btn
-            v-if="campaign.charityDonateLink"
+          <v-btn
+            v-if="donateLink"
             color="#0B4F6C"
             variant="flat"
             size="large"
             class="text-none font-weight-bold rounded-lg px-8 py-2 text-white"
-            :href="campaign.charityDonateLink"
+            :href="donateLink"
             target="_blank"
             rel="noopener"
           >
-            Donate to {{ campaign.charityName || 'the Charity' }}
+            Donate here
           </v-btn>
           <v-btn
             v-else
@@ -134,7 +134,7 @@ interface Campaign {
   charityName: string
   charityLogoUrl: string
   charityWebsite: string
-  charityDonateLink: string
+  charityDirectDonateLink: string
   charityDescription: string
   startDate: string
   endDate: string
@@ -142,7 +142,7 @@ interface Campaign {
 
 const campaign = ref<Campaign>({
   name: '', tagline: '', charityName: '', charityLogoUrl: '',
-  charityWebsite: '', charityDonateLink: '',charityDescription: '', startDate: '', endDate: ''
+  charityWebsite: '', charityDirectDonateLink: '',charityDescription: '', startDate: '', endDate: ''
 })
 
 const progress = ref({
@@ -167,6 +167,13 @@ const formatDateTime = (value: string) => {
 const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
 const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
 const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
+
+// Makes sure the link works even if someone types "youtube.com" without https://
+const donateLink = computed(() => {
+  const link = (campaign.value.charityDirectDonateLink || '').trim()
+  if (!link) return ''
+  return /^https?:\/\//i.test(link) ? link : `https://${link}`
+})
 
 let pollHandle: ReturnType<typeof setInterval> | null = null
 
