@@ -1,5 +1,5 @@
 <template>
-  <div class="countdown-bar">
+  <div class="countdown-bar" :class="{ 'is-ready': ready }">
     <span class="countdown-label">{{ countdownLabel }}</span>
 
     <div class="countdown-timer">
@@ -20,7 +20,7 @@
       <span class="countdown-colon">:</span>
       <div class="countdown-segment">
         <span class="countdown-number">{{ seconds }}</span>
-        <span class="countdown-unit">secsonds</span>
+        <span class="countdown-unit">seconds</span>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@
 
 
 <script setup lang="ts">
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 
 const props = defineProps<{
   startTime: string
@@ -44,7 +44,8 @@ const days = ref('00')
 const hours = ref('00')
 const minutes = ref('00')
 const seconds = ref('00')
-const countdownLabel = ref('Loading...')
+const countdownLabel = ref('')
+const ready = computed(() => !!props.endTime)
 
 let intervalId: number | undefined
 
@@ -52,8 +53,8 @@ let intervalId: number | undefined
 function updateCountdown() {
 
 const now = new Date().getTime()
-const start = props.startTime ? new Date(props.startTime).getTime() : 0
-const end = props.endTime ? new Date(props.endTime).getTime() : 0
+const start = props.startTime ? new Date(props.startTime.replace(' ', 'T')).getTime() : 0
+const end = props.endTime ? new Date(props.endTime.replace(' ', 'T')).getTime() : 0
 
 
 let distance = 0
@@ -158,5 +159,14 @@ onUnmounted(() => {
   font-size: 1.4rem;
   font-weight: bold;
   padding-bottom: 14px;
+}
+
+/* to show black bar shows straight away; its contents fade in once the dates arrive */
+.countdown-bar > * {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.countdown-bar.is-ready > * {
+  opacity: 1;
 }
 </style>

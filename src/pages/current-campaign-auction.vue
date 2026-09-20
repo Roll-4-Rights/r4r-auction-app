@@ -7,7 +7,7 @@
       style="background-color: #FFFFFF !important; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03) !important;"
       elevation="0"
     >
-      <v-card-text class="pa-6 pa-md-10">
+      <v-card-text class="pa-6 pa-md-10 fade-in-content" :class="{ 'is-loaded': contentReady }">
 
         <!-- Campaign Header -->
         <div class="text-left mb-8">
@@ -143,6 +143,8 @@ interface Campaign {
   endDate: string
 }
 
+const contentReady = ref(false)
+
 const campaign = ref<Campaign>({
   name: '', tagline: '', charityName: '', charityLogoUrl: '',
   charityWebsite: '', charityDescription: '', startDate: '', endDate: ''
@@ -157,7 +159,7 @@ const progress = ref({
 
 const formatDateTime = (value: string) => {
   if (!value) return 'TBD'
-  const parsed = new Date(value)
+  const parsed = new Date(value.replace(' ', 'T'))
   if (isNaN(parsed.getTime())) return 'TBD'
   return parsed.toLocaleString(undefined, {
     month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
@@ -200,13 +202,28 @@ const loadCampaignInfo = async () => {
   }
 }
 
-onMounted(() => {
-  loadCampaignInfo()
-  refreshProgress()
-  pollHandle = setInterval(refreshProgress, 20000) // Poll for donation updates
+onMounted(async () => {
+  pollHandle = setInterval(refreshProgress, 20000) // poll for donation updates
+  // just iun case: show the card anyway if the API is slow or down
+  const timer = setTimeout(() => { contentReady.value = true }, 3000)
+  await Promise.all([loadCampaignInfo(), refreshProgress()])
+  clearTimeout(timer)
+  contentReady.value = true
 })
 
 onUnmounted(() => {
   if (pollHandle) clearInterval(pollHandle)
 })
 </script>
+
+
+
+<style scoped>
+.fade-in-content {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.fade-in-content.is-loaded {
+  opacity: 1;
+}
+</style>

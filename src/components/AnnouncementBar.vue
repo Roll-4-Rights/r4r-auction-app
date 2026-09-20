@@ -1,11 +1,11 @@
 <template>
-  <div class="announcement-bar" v-if="messages.length">
+  <div class="announcement-bar" :class="{ 'is-ready': messages.length > 0 }" v-if="loading || messages.length">
     <button class="announcement-arrow" @click="prev" aria-label="Previous">
       <v-icon size="16">mdi-chevron-left</v-icon>
     </button>
     
     <div class="announcement-window">
-      <TransitionGroup name="slide">
+      <TransitionGroup v-if="messages.length" name="slide">
         <!-- Render every item using the active class mapping to preserve height mechanics -->
         <span 
           v-for="(msg, i) in messages" 
@@ -31,6 +31,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const messages = ref<string[]>([])
 const index = ref(0)
+const loading = ref(true)
 
 let intervalId: ReturnType<typeof setInterval> | undefined
 
@@ -68,12 +69,15 @@ async function fetchAnnouncements() {
       .filter(Boolean)
   } catch (err) {
     console.error('Failed to load banner messages', err)
+  } finally {
+    loading.value = false
   }
 }
 
 onMounted(async () => {
   await fetchAnnouncements()
   startInterval()
+  
 })
 
 onUnmounted(() => {
@@ -150,5 +154,17 @@ onUnmounted(() => {
 .slide-leave-to {
   transform: translate3d(-100%, 0, 0);
   opacity: 0;
+}
+
+/*  orange bar shows straight away; its contents fade in once messages arrive */
+.announcement-bar > * {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.announcement-bar.is-ready > * {
+  opacity: 1;
+}
+.announcement-bar:not(.is-ready) {
+  pointer-events: none;
 }
 </style>
