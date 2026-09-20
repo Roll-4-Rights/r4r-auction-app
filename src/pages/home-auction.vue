@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+<div class="home-page" :class="{ 'is-loaded': contentReady }">
 
     <!-- Hero image -->
     <div class="hero-section">      <!-- The rigid  frame -->
@@ -84,6 +84,17 @@
 
 
 <script setup lang="ts">
+const contentReady = ref(false)
+
+function preloadImage(src: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(true)
+    img.onerror = () => resolve(false)
+    img.src = src
+  })
+}
+
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import fallbackHeroImage from '@/assets/Hero_Sized_big.jpg'
@@ -137,7 +148,6 @@ async function fetchSiteContent() {
       return
     }
   
-    // Properly tracks index [0] of data.list or handles flat objects
     const content = Array.isArray(data.list) ? (data.list[0] ?? {}) : (data ?? {})
 
     const rawHeroImage = content['Hero Image']
@@ -167,6 +177,8 @@ async function fetchSiteContent() {
     if (content['Social Instagram Url']) instagramUrl.value = content['Social Instagram Url']
     if (content['Social Bluesky Url']) blueskyUrl.value = content['Social Bluesky Url']
     if (content['Footer Copy']) footerCopy.value = content['Footer Copy']
+    const loaded = await preloadImage(heroImage.value)
+    if (!loaded) heroImage.value = fallbackHeroImage
   } catch (err) {
     console.error('Failed to load site content', err)
     heroImage.value = fallbackHeroImage
@@ -187,9 +199,13 @@ async function fetchCampaignSettings() {
   }
 }
 
-onMounted(() => {
-  fetchSiteContent()
-  fetchCampaignSettings()
+
+onMounted(async () => {
+  // Safety net: show the page anyway if the API is slow or down
+  const timer = setTimeout(() => { contentReady.value = true }, 3000)
+  await Promise.all([fetchSiteContent(), fetchCampaignSettings()])
+  clearTimeout(timer)
+  contentReady.value = true
 })
 </script>
 
@@ -200,8 +216,12 @@ onMounted(() => {
 
 
 <style scoped>
-.home-page {
-  background: #f2ece1;
+.home-page > * {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.home-page.is-loaded > * {
+  opacity: 1;
 }
 
 /* 🎥 Hero Section & Pan Animation Frame */
