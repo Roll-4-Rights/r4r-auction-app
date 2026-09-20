@@ -7,7 +7,7 @@
       style="background-color: #FFFFFF !important; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03) !important;"
       elevation="0"
     >
-      <v-card-text class="pa-6 pa-md-10">
+      <v-card-text class="pa-6 pa-md-10 fade-in-content" :class="{ 'is-loaded': contentReady }">
 
         <!-- Campaign Header -->
         <div class="text-left mb-8">
@@ -70,10 +70,9 @@
         <div class="mb-8">
           <div class="d-flex justify-space-between mb-2">
             <p class="text-caption text-medium-emphasis mb-0">{{ formattedRaised }} raised</p>
-            <p class="text-caption text-medium-emphasis mb-0">Goal: {{ formattedGoal }}</p>
           </div>
           <v-progress-linear
-            :model-value="progressPercent"
+            :model-value="progress.progressWithinMilestone * 100"
             height="10"
             rounded
             color="#0B4F6C"
@@ -121,9 +120,12 @@
   </v-container>
 </template>
 
+
+
+
+
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { apiService } from '@/services/api'
 import DragonProgressTracker from '@/components/DragonProgressTracker.vue'
 
 interface Campaign {
@@ -138,55 +140,45 @@ interface Campaign {
 }
 
 const campaign = ref<Campaign>({
-  name: '',
-  tagline: '',
-  charityName: '',
-  charityLogoUrl: '',
-  charityWebsite: '',
-  charityDescription: '',
-  startDate: '',
-  endDate: ''
+  name: '', tagline: '', charityName: '', charityLogoUrl: '',
+  charityWebsite: '', charityDescription: '', startDate: '', endDate: ''
 })
 
-// Start Date / End Date are now full datetimes (charity runs end at a specific time),
-// so format them for display rather than showing the raw ISO string.
+const progress = ref({
+  total: 0,
+  currentMilestone: 0,
+  nextMilestone: 10000,
+  progressWithinMilestone: 0
+})
+
+const contentReady = ref(false)
+
+// Dates are full datetimes, so format them for display. The .replace makes
+// NocoDB's date format readable in every browser (including Safari).
 const formatDateTime = (value: string) => {
   if (!value) return 'TBD'
-  const parsed = new Date(value)
+  const parsed = new Date(value.replace(' ', 'T'))
   if (isNaN(parsed.getTime())) return 'TBD'
   return parsed.toLocaleString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
+    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
   })
 }
 
 const formattedStartDate = computed(() => formatDateTime(campaign.value.startDate))
 const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
-
-const formattedGoal = computed(() =>
-  campaign.value.goalAmount ? `$${campaign.value.goalAmount.toLocaleString()}` : 'TBD'
-)
-
-const formattedRaised = computed(() => `$${campaign.value.raisedAmount.toLocaleString()}`)
-
-const progress = ref({
-  total: 0,
-  currentMilestone: 0,
-  nextMilestone: 10000
-})
+const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
 
 let pollHandle: ReturnType<typeof setInterval> | null = null
 
 const refreshProgress = async () => {
   try {
-    const data = await apiService.fetchCampaignProgress()
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/campaign-progress`)
+    const data = await res.json()
     progress.value = {
-      total: data.total,
-      currentMilestone: data.currentMilestone,
-      nextMilestone: data.nextMilestone
+      total: data.total ?? 0,
+      currentMilestone: data.currentMilestone ?? 0,
+      nextMilestone: data.nextMilestone ?? 10000,
+      progressWithinMilestone: data.progressWithinMilestone ?? 0
     }
   } catch (err) {
     console.error('Failed to refresh campaign progress:', err)
@@ -195,19 +187,36 @@ const refreshProgress = async () => {
 
 const loadCampaignInfo = async () => {
   try {
-    campaign.value = await apiService.fetchCampaignInfo()
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/campaign-info`)
+    campaign.value = await res.json()
   } catch (err) {
     console.error('Failed to load campaign info:', err)
   }
 }
 
-onMounted(() => {
-  loadCampaignInfo()
-  refreshProgress()
+onMounted(async () => {
   pollHandle = setInterval(refreshProgress, 20000)
+  // Safety net: show the card anyway if the API is slow or down
+  const timer = setTimeout(() => { contentReady.value = true }, 3000)
+  await Promise.all([loadCampaignInfo(), refreshProgress()])
+  clearTimeout(timer)
+  contentReady.value = true
 })
 
 onUnmounted(() => {
   if (pollHandle) clearInterval(pollHandle)
 })
 </script>
+
+
+
+
+<style scoped>
+.fade-in-content {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.fade-in-content.is-loaded {
+  opacity: 1;
+}
+</style>
