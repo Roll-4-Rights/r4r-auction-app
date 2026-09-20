@@ -101,6 +101,8 @@ const bodyParagraphs = ref([
   'body paragraph 2',
 ])
 
+const NOCODB_URL = (import.meta.env.VITE_NOCODB_URL || 'https://nocodb.roll4rights.duckdns.org').replace(/\/$/, '')
+
 const ctaText = ref('CTA button')
 const instagramUrl = ref('https://instagram.com')
 const blueskyUrl = ref('https://bsky.app')
@@ -147,11 +149,8 @@ async function fetchSiteContent() {
         if (rawUrl) {
           if (rawUrl.startsWith('http')) {
             heroImage.value = rawUrl
-          } else if (rawUrl.startsWith('/')) {
-            heroImage.value = `http://localhost:8080${rawUrl}`
           } else {
-            // Forces local NocoDB upload paths (like noco/...) to load via port 8080
-            heroImage.value = `http://localhost:8080/${rawUrl}`
+            heroImage.value = `${NOCODB_URL}/${rawUrl.replace(/^\//, '')}`
           }
         }
       } else if (typeof rawHeroImage === 'string') {
