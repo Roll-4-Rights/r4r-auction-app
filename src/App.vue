@@ -39,8 +39,8 @@ async function fetchCampaignSettings() {
     }
 
     const records = data.list ?? []
-    campaignStartTime.value = records[0]?.['Auction Start Time'] ?? ''
-    campaignEndTime.value = records[0]?.['Auction End Time'] ?? ''
+    campaignStartTime.value = data.startDate ?? ''
+    campaignEndTime.value = data.endDate ?? ''
   } catch (err) {
     console.error('Failed to load campaign settings', err)
   }
