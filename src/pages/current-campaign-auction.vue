@@ -36,8 +36,8 @@
               {{ campaign.charityName || 'No charity selected yet' }}
             </p>
             <a
-              v-if="campaign.charityWebsite"
-              :href="campaign.charityWebsite"
+              v-if="websiteLink"
+              :href="websiteLink"
               target="_blank"
               rel="noopener"
               class="text-caption font-weight-bold"
@@ -92,19 +92,19 @@
 
         <v-divider class="mb-6 opacity-50"></v-divider>
 
-        <!-- Call to Action -->
+        <!-- Call to Action: links to the "Charity Direct Donate Link" column -->
         <div class="d-flex justify-end">
           <v-btn
-            v-if="campaign.charityWebsite"
+            v-if="donateLink"
             color="#0B4F6C"
             variant="flat"
             size="large"
             class="text-none font-weight-bold rounded-lg px-8 py-2 text-white"
-            :href="campaign.charityWebsite"
+            :href="donateLink"
             target="_blank"
             rel="noopener"
           >
-            {{ campaign.charityName || 'Charity' }}
+            Donate here
           </v-btn>
           <v-btn
             v-else
@@ -114,7 +114,7 @@
             class="text-none font-weight-bold rounded-lg px-8 py-2"
             disabled
           >
-            Charity link not set yet
+            Donate link not set yet
           </v-btn>
         </div>
 
@@ -138,16 +138,15 @@ interface Campaign {
   charityName: string
   charityLogoUrl: string
   charityWebsite: string
+  charityDirectDonateLink: string
   charityDescription: string
   startDate: string
   endDate: string
 }
 
-const contentReady = ref(false)
-
 const campaign = ref<Campaign>({
   name: '', tagline: '', charityName: '', charityLogoUrl: '',
-  charityWebsite: '', charityDescription: '', startDate: '', endDate: ''
+  charityWebsite: '', charityDirectDonateLink: '', charityDescription: '', startDate: '', endDate: ''
 })
 
 const progress = ref({
@@ -157,6 +156,10 @@ const progress = ref({
   progressWithinMilestone: 0
 })
 
+// Stays false until the real data has arrived, so the page never shows placeholder text first
+const contentReady = ref(false)
+
+// The .replace makes NocoDB's date format readable in every browser (including Safari)
 const formatDateTime = (value: string) => {
   if (!value) return 'TBD'
   const parsed = new Date(value.replace(' ', 'T'))
@@ -171,6 +174,15 @@ const formattedEndDate = computed(() => formatDateTime(campaign.value.endDate))
 const formattedRaised = computed(() => `$${progress.value.total.toLocaleString()}`)
 // const formattedNextMilestone = computed(() => `$${progress.value.nextMilestone.toLocaleString()}`)
 
+// Adds https:// when someone forgets it, so links don't turn into pages on your own site
+const withHttps = (value: string) => {
+  const link = (value || '').trim()
+  if (!link) return ''
+  return /^https?:\/\//i.test(link) ? link : `https://${link}`
+}
+const donateLink = computed(() => withHttps(campaign.value.charityDirectDonateLink))
+const websiteLink = computed(() => withHttps(campaign.value.charityWebsite))
+
 let pollHandle: ReturnType<typeof setInterval> | null = null
 
 // Hits Flask progress route
@@ -179,12 +191,12 @@ const refreshProgress = async () => {
     const url = `${import.meta.env.VITE_API_URL}/api/campaign-progress`
     const res = await fetch(url)
     const data = await res.json()
-    
+
     progress.value = {
-      total: data.total,
-      currentMilestone: data.currentMilestone,
-      nextMilestone: data.nextMilestone,
-      progressWithinMilestone: data.progressWithinMilestone
+      total: data.total ?? 0,
+      currentMilestone: data.currentMilestone ?? 0,
+      nextMilestone: data.nextMilestone ?? 10000,
+      progressWithinMilestone: data.progressWithinMilestone ?? 0
     }
   } catch (err) {
     console.error('Failed to refresh campaign progress:', err)
@@ -203,8 +215,8 @@ const loadCampaignInfo = async () => {
 }
 
 onMounted(async () => {
-  pollHandle = setInterval(refreshProgress, 20000) // poll for donation updates
-  // just iun case: show the card anyway if the API is slow or down
+  pollHandle = setInterval(refreshProgress, 20000) // Poll for donation updates
+  // Safety net: show the card anyway if the API is slow or down
   const timer = setTimeout(() => { contentReady.value = true }, 3000)
   await Promise.all([loadCampaignInfo(), refreshProgress()])
   clearTimeout(timer)
@@ -215,7 +227,6 @@ onUnmounted(() => {
   if (pollHandle) clearInterval(pollHandle)
 })
 </script>
-
 
 
 <style scoped>
