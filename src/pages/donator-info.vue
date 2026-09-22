@@ -217,15 +217,17 @@ onMounted(fetchProfiles)
   align-items: center;
   width: 100%;
   margin: 0 auto 2.5rem;
-  padding: 0 0.5rem;
+  padding: 0;
+  overflow: visible;
 }
 
 .ivy-divider-image {
   display: block;
-  width: 100%;
-  max-width: 1200px;
+  width: 115%;
+  max-width: none;
   height: auto;
-  max-height: 100px;
+  max-height: 110px;
+  margin-left: -7.5%;
   object-fit: contain;
 }
 
@@ -302,12 +304,12 @@ onMounted(fetchProfiles)
   box-shadow: -7px -7px 0 rgba(255, 239, 174, 0.22);
 }
 
-.parchment-decoration {
+/* .parchment-decoration {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-}
+} */
 
 .parchment-curl {
   position: absolute;
