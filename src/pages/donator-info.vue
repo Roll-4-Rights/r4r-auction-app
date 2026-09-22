@@ -53,6 +53,14 @@
             class="h-100 parchment-card elevation-hover"
             elevation="0"
           >
+            <!-- PNG parchment artwork: ACTIVE -->
+            <div class="parchment-image-layer" aria-hidden="true">
+              <img
+                src="/images/donator-parchment.png"
+                alt=""
+                class="parchment-image"
+              />
+            </div>
             <!-- parchment decoration -->
 
             <v-card-text class="parchment-content pa-6">
@@ -253,28 +261,10 @@ onMounted(fetchProfiles)
   overflow: hidden;
   min-height: 260px;
   height: 100%;
-  border: 1px solid #b98b4d !important;
+  border: 0 !important;
   border-radius: 4px !important;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(112, 70, 28, 0.16),
-      transparent 18%,
-      transparent 78%,
-      rgba(112, 70, 28, 0.14)
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 247, 205, 0.3),
-      transparent 22%,
-      rgba(121, 74, 28, 0.08) 70%,
-      rgba(255, 247, 205, 0.2)
-    ),
-    #e4c98f !important;
-  box-shadow:
-    0 7px 12px rgba(67, 39, 15, 0.2),
-    inset 0 0 18px rgba(111, 64, 19, 0.2),
-    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+  background: transparent !important;
+  box-shadow: 0 7px 12px rgba(67, 39, 15, 0.2) !important;
   transform: rotate(-0.35deg);
   transition:
     transform 0.2s ease,
