@@ -42,17 +42,57 @@
           sm="6"
           md="4"
         >
-          <v-card
-            class="h-100 rounded-2xl border-0 elevation-hover"
-            style="background-color: #FFFFFF !important; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03) !important; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;"
+                    <v-card
+            class="h-100 parchment-card elevation-hover"
             elevation="0"
           >
-            <v-card-text class="pa-6 d-flex flex-column" style="min-height: 230px;">
+            <!-- CSS parchment decoration: ACTIVE VERSION -->
+            <div class="parchment-decoration" aria-hidden="true">
+              <span class="parchment-curl parchment-curl-top-left"></span>
+              <span class="parchment-curl parchment-curl-top-right"></span>
+
+              <span class="ivy-vine ivy-vine-left"></span>
+              <span class="ivy-vine ivy-vine-bottom"></span>
+              <span class="ivy-leaf leaf-1"></span>
+              <span class="ivy-leaf leaf-2"></span>
+              <span class="ivy-leaf leaf-3"></span>
+              <span class="ivy-leaf leaf-4"></span>
+              <span class="ivy-leaf leaf-5"></span>
+            </div>
+
+            <!--
+              PNG PARCHMENT VERSION: CURRENTLY DISABLED
+
+              To use your own parchment image instead:
+
+              1. Comment out the entire "CSS parchment decoration" block above.
+              2. Uncomment the "PNG parchment decoration" block below.
+              3. Add your image here:
+                public/images/donator-parchment.png
+
+              The PNG should have a transparent background and should include the
+              parchment edges and ivy decoration, but not the profile text.
+            -->
+
+            <!--
+            <div class="parchment-image-layer" aria-hidden="true">
+              <img
+                src="/images/donator-parchment.png"
+                alt=""
+                class="parchment-image"
+              />
+            </div>
+            -->
+
+            <v-card-text class="parchment-content pa-6 d-flex flex-column">
               <h3 class="text-h6 font-weight-black text-black mb-2">
                 {{ profile.socialMediaName || 'Anonymous Donator' }}
               </h3>
 
-              <div v-if="profile.location" class="d-flex align-center mb-3 text-medium-emphasis text-body-2">
+              <div
+                v-if="profile.location"
+                class="d-flex align-center mb-3 text-medium-emphasis text-body-2"
+              >
                 <v-icon icon="mdi-map-marker-outline" size="16" class="mr-1"></v-icon>
                 {{ profile.location }}
               </div>
@@ -182,9 +222,208 @@ onMounted(fetchProfiles)
 
 
 <style scoped>
+.parchment-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  border: 1px solid #b98b4d !important;
+  border-radius: 4px !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(112, 70, 28, 0.16),
+      transparent 18%,
+      transparent 78%,
+      rgba(112, 70, 28, 0.14)
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 247, 205, 0.3),
+      transparent 22%,
+      rgba(121, 74, 28, 0.08) 70%,
+      rgba(255, 247, 205, 0.2)
+    ),
+    #e4c98f !important;
+  box-shadow:
+    0 7px 12px rgba(67, 39, 15, 0.2),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+  transform: rotate(-0.35deg);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Alternating slight rotations make the cards feel handmade. */
+.parchment-card:nth-child(even) {
+  transform: rotate(0.35deg);
+}
+
+.parchment-card:hover {
+  transform: translateY(-4px) rotate(0deg);
+  box-shadow:
+    0 13px 22px rgba(67, 39, 15, 0.25),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+}
+
+.parchment-content {
+  position: relative;
+  z-index: 3;
+  min-height: 260px;
+  color: #4b2b17;
+}
+
+/* Soft, uneven-looking parchment corners. */
+.parchment-card::before,
+.parchment-card::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  background: rgba(125, 76, 27, 0.18);
+  pointer-events: none;
+}
+
+.parchment-card::before {
+  top: -22px;
+  left: -22px;
+  border-radius: 50%;
+  box-shadow: 7px 7px 0 rgba(255, 239, 174, 0.25);
+}
+
+.parchment-card::after {
+  right: -22px;
+  bottom: -22px;
+  border-radius: 50%;
+  box-shadow: -7px -7px 0 rgba(255, 239, 174, 0.22);
+}
+
+/* Decorative rolled/curl marks at the top corners. */
+.parchment-decoration {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.parchment-curl {
+  position: absolute;
+  width: 34px;
+  height: 12px;
+  border: 2px solid rgba(112, 65, 21, 0.48);
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+.parchment-curl-top-left {
+  top: 12px;
+  left: 12px;
+  transform: rotate(-35deg);
+}
+
+.parchment-curl-top-right {
+  top: 12px;
+  right: 12px;
+  transform: rotate(35deg);
+}
+
+/* Base vine shape. */
+.ivy-vine {
+  position: absolute;
+  display: block;
+  height: 3px;
+  border-radius: 50%;
+  background: #3f5d2d;
+  opacity: 0.9;
+  transform-origin: left center;
+}
+
+/* Ivy climbing the left edge. */
+.ivy-vine-left {
+  left: 5px;
+  bottom: 28px;
+  width: 92px;
+  transform: rotate(-64deg);
+}
+
+/* Ivy trailing along the bottom edge. */
+.ivy-vine-bottom {
+  right: 12px;
+  bottom: 9px;
+  width: 132px;
+  transform: rotate(-4deg);
+}
+
+/* Individual leaves. */
+.ivy-leaf {
+  position: absolute;
+  z-index: 3;
+  width: 13px;
+  height: 19px;
+  border-radius: 13px 2px 13px 2px;
+  background: linear-gradient(135deg, #6f8e45, #304b25);
+  box-shadow: 1px 1px 2px rgba(45, 56, 24, 0.35);
+  opacity: 0.95;
+}
+
+.leaf-1 {
+  left: 18px;
+  bottom: 73px;
+  transform: rotate(-42deg);
+}
+
+.leaf-2 {
+  left: 40px;
+  bottom: 54px;
+  transform: rotate(28deg);
+}
+
+.leaf-3 {
+  left: 61px;
+  bottom: 32px;
+  transform: rotate(-38deg);
+}
+
+.leaf-4 {
+  right: 94px;
+  bottom: 14px;
+  transform: rotate(38deg);
+}
+
+.leaf-5 {
+  right: 57px;
+  bottom: 10px;
+  transform: rotate(-42deg);
+}
+
 .elevation-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.06) !important;
+  transform: translateY(-4px) rotate(0deg);
+  box-shadow:
+    0 13px 22px rgba(67, 39, 15, 0.25),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+}
+
+/*
+  PNG VERSION STYLES
+
+  These styles are already included so that switching to the PNG markup
+  only requires uncommenting the markup above.
+*/
+.parchment-image-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.parchment-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
 .donator-banner-placeholder {
