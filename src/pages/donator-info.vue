@@ -225,6 +225,11 @@ onMounted(fetchProfiles)
 
 
 <style scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&display=swap');
+
 .parchment-card {
   position: relative;
   overflow: hidden;
@@ -483,17 +488,14 @@ onMounted(fetchProfiles)
 }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap');
-
 /* Donator name */
 .donator-name {
   color: #4b2b17;
   font-family: "Eagle Lake", Georgia, serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.035em;
-  line-height: 1.25;
-  text-shadow: 0 1px 0 rgba(255, 239, 174, 0.45);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
 }
 
 /* Location */
