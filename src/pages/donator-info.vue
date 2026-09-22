@@ -1,10 +1,12 @@
 <template>
   <v-container class="py-10 px-6" max-width="1400">
-    <div class="medieval-banner-wrap">
-      <div class="medieval-banner">
-        <span class="banner-ornament left">✦</span>
+    <div class="cloth-banner-wrap">
+      <div class="cloth-banner">
+        <div class="banner-roll banner-roll-left"></div>
+
         <h1>Donator Profiles</h1>
-        <span class="banner-ornament right">✦</span>
+
+        <div class="banner-roll banner-roll-right"></div>
       </div>
     </div>
 
@@ -172,71 +174,175 @@ onMounted(fetchProfiles)
 
 
 <style scoped>
-.elevation-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.06) !important;
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&display=swap');
+
+.cloth-banner-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2.5rem;
+  padding: 0 2.5rem;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&display=swap');
-
-.medieval-banner-wrap {
-  width: min(100%, 900px);
-  margin: 0 auto 2rem auto;
-}
-
-.medieval-banner {
+.cloth-banner {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 1.2rem 2.5rem;
-  background: linear-gradient(180deg, #7b3d1a 0%, #4b220d 100%);
-  color: #f5e7b2;
-  border: 3px solid #d8b76a;
-  box-shadow:
-    0 10px 20px rgba(24, 10, 4, 0.35),
-    inset 0 0 0 2px rgba(255, 224, 149, 0.35);
-  clip-path: polygon(
-    0% 18%, 6% 18%, 10% 0%, 90% 0%, 94% 18%, 100% 18%,
-    100% 82%, 94% 82%, 90% 100%, 10% 100%, 6% 82%, 0% 82%
-  );
+  width: min(100%, 760px);
+  min-height: 112px;
+  padding: 1.25rem 4rem;
+  color: #4b2b17;
   text-align: center;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(112, 69, 29, 0.22) 0%,
+      transparent 8%,
+      rgba(255, 241, 190, 0.3) 22%,
+      transparent 42%,
+      rgba(113, 70, 30, 0.12) 68%,
+      transparent 88%,
+      rgba(92, 52, 20, 0.22) 100%
+    ),
+    #d8b477;
+  border-top: 3px solid #9a692f;
+  border-bottom: 4px solid #8b5b28;
+  box-shadow:
+    0 8px 12px rgba(66, 38, 15, 0.28),
+    inset 0 5px 7px rgba(255, 245, 202, 0.35),
+    inset 0 -8px 10px rgba(91, 48, 13, 0.2);
+  transform: rotate(-0.5deg);
 }
 
-.medieval-banner::before,
-.medieval-banner::after {
+/* Subtle cloth folds */
+.cloth-banner::before,
+.cloth-banner::after {
   content: "";
   position: absolute;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  transform: translateY(-50%);
-  background: linear-gradient(180deg, #d9b86a, #9b6c2f);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  pointer-events: none;
 }
 
-.medieval-banner::before {
-  left: 18px;
+.cloth-banner::before {
+  left: 12%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 245, 202, 0.25),
+    transparent
+  );
 }
 
-.medieval-banner::after {
-  right: 18px;
+.cloth-banner::after {
+  right: 12%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(92, 48, 14, 0.13),
+    transparent
+  );
 }
 
-.medieval-banner h1 {
+.cloth-banner h1 {
+  position: relative;
+  z-index: 1;
   margin: 0;
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.6rem, 2vw, 3rem);
-  line-height: 1.1;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: clamp(1.45rem, 3vw, 2.5rem);
+  font-weight: 800;
   letter-spacing: 0.08em;
+  line-height: 1.2;
   text-transform: uppercase;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  text-shadow:
+    1px 1px 0 rgba(255, 238, 175, 0.55),
+    2px 2px 2px rgba(70, 38, 14, 0.25);
 }
 
-.banner-ornament {
-  font-size: 1.4rem;
-  color: #f7d98d;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+/* Rolled wooden/fabric ends */
+.banner-roll {
+  position: absolute;
+  top: -7px;
+  width: 30px;
+  height: calc(100% + 14px);
+  border: 2px solid #82501f;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    #704118,
+    #c28c43 35%,
+    #e0b66b 55%,
+    #87541f
+  );
+  box-shadow:
+    2px 4px 5px rgba(64, 34, 10, 0.3),
+    inset 2px 0 3px rgba(255, 222, 140, 0.35);
+}
+
+.banner-roll-left {
+  left: -20px;
+  transform: rotate(2deg);
+}
+
+.banner-roll-right {
+  right: -20px;
+  transform: rotate(-2deg);
+}
+
+/* Hanging pointed cloth ends */
+.banner-roll-left::after,
+.banner-roll-right::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 44px;
+  height: 45px;
+  background: #b68543;
+  border-bottom: 3px solid #82501f;
+  clip-path: polygon(0 0, 100% 0, 72% 100%, 50% 78%, 28% 100%);
+}
+
+.banner-roll-left::after {
+  left: -9px;
+  transform: rotate(2deg);
+}
+
+.banner-roll-right::after {
+  right: -9px;
+  transform: rotate(-2deg);
+}
+
+@media (max-width: 600px) {
+  .cloth-banner-wrap {
+    padding: 0 1.5rem;
+  }
+
+  .cloth-banner {
+    min-height: 92px;
+    padding: 1rem 2.5rem;
+  }
+
+  .banner-roll {
+    width: 22px;
+  }
+
+  .banner-roll-left {
+    left: -14px;
+  }
+
+  .banner-roll-right {
+    right: -14px;
+  }
+
+  .cloth-banner h1 {
+    letter-spacing: 0.04em;
+  }
+}
+
+.elevation-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
 }
 </style>
