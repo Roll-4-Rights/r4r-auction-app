@@ -1,7 +1,11 @@
 <template>
   <v-container class="py-10 px-6" max-width="1400">
-    <div class="d-flex align-center mb-8 pl-2">
-      <h1 class="text-h4 text-sm-h3 font-weight-black text-black">Donator Profiles</h1>
+    <div class="medieval-banner-wrap">
+      <div class="medieval-banner">
+        <span class="banner-ornament left">✦</span>
+        <h1>Donator Profiles</h1>
+        <span class="banner-ornament right">✦</span>
+      </div>
     </div>
 
     <!-- Loading state -->
@@ -171,5 +175,68 @@ onMounted(fetchProfiles)
 .elevation-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&display=swap');
+
+.medieval-banner-wrap {
+  width: min(100%, 900px);
+  margin: 0 auto 2rem auto;
+}
+
+.medieval-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(180deg, #7b3d1a 0%, #4b220d 100%);
+  color: #f5e7b2;
+  border: 3px solid #d8b76a;
+  box-shadow:
+    0 10px 20px rgba(24, 10, 4, 0.35),
+    inset 0 0 0 2px rgba(255, 224, 149, 0.35);
+  clip-path: polygon(
+    0% 18%, 6% 18%, 10% 0%, 90% 0%, 94% 18%, 100% 18%,
+    100% 82%, 94% 82%, 90% 100%, 10% 100%, 6% 82%, 0% 82%
+  );
+  text-align: center;
+}
+
+.medieval-banner::before,
+.medieval-banner::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  background: linear-gradient(180deg, #d9b86a, #9b6c2f);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.medieval-banner::before {
+  left: 18px;
+}
+
+.medieval-banner::after {
+  right: 18px;
+}
+
+.medieval-banner h1 {
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 2vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.banner-ornament {
+  font-size: 1.4rem;
+  color: #f7d98d;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
 }
 </style>
