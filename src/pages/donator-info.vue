@@ -92,6 +92,9 @@
   </v-container>
 </template>
 
+
+
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { apiService } from '@/services/api'
@@ -157,6 +160,12 @@ const goToPage = (target: number) => {
 
 onMounted(fetchProfiles)
 </script>
+
+
+
+
+
+
 
 <style scoped>
 .elevation-hover:hover {
