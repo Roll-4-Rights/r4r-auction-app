@@ -12,7 +12,7 @@
         <!-- Fantasy ivy divider -->
     <div class="ivy-divider" aria-hidden="true">
       <img
-        src="/images/ivy-divider.svg"
+        src="/images/ivy-divider.png"
         alt=""
         class="ivy-divider-image"
       />
