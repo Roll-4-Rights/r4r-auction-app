@@ -34,7 +34,7 @@
     </div>
 
     <template v-else>
-      <v-row justify="center">
+      <v-row>
         <v-col
           v-for="profile in profiles"
           :key="profile.id"
@@ -42,11 +42,12 @@
           sm="6"
           md="4"
         >
-          <v-card
+                    <v-card
             class="h-100 parchment-card elevation-hover"
             elevation="0"
           >
-            <div class="parchment-decoration" aria-hidden="true">
+            <!-- CSS parchment decoration: ACTIVE VERSION -->
+            <!-- <div class="parchment-decoration" aria-hidden="true">
               <span class="parchment-curl parchment-curl-top-left"></span>
               <span class="parchment-curl parchment-curl-top-right"></span>
 
@@ -57,30 +58,47 @@
               <span class="ivy-leaf leaf-3"></span>
               <span class="ivy-leaf leaf-4"></span>
               <span class="ivy-leaf leaf-5"></span>
+            </div> -->
+
+            <!--
+              PNG PARCHMENT VERSION: CURRENTLY ENABLED
+
+              To use your own parchment image instead:
+
+              1. Comment out the entire "CSS parchment decoration" block above.
+              2. Uncomment the "PNG parchment decoration" block below.
+              3. Add your image here:
+                public/images/donator-parchment.png
+
+              The PNG should have a transparent background and should include the
+              parchment edges and ivy decoration, but not the profile text.
+            -->
+
+            
+            <div class="parchment-image-layer" aria-hidden="true">
+              <img
+                src="/images/donator-parchment.png"
+                alt=""
+                class="parchment-image"
+              />
             </div>
+           
 
             <v-card-text class="parchment-content pa-6 d-flex flex-column">
-              <div class="d-flex align-center mb-3">
-                <span class="wax-seal" aria-hidden="true">
-                  {{ (profile.socialMediaName || 'A').charAt(0).toUpperCase() }}
-                </span>
-                <h3 class="donator-name mb-0">
-                  {{ profile.socialMediaName || 'Anonymous Donator' }}
-                </h3>
-              </div>
-
-              <div class="name-rule" aria-hidden="true"></div>
+              <h3 class="text-h6 font-weight-black text-black mb-2">
+                {{ profile.socialMediaName || 'Anonymous Donator' }}
+              </h3>
 
               <div
                 v-if="profile.location"
-                class="d-flex align-center mb-3 mt-3 donator-location"
+                class="d-flex align-center mb-3 text-medium-emphasis text-body-2"
               >
-                <v-icon icon="mdi-map-marker-outline" size="15" class="mr-1"></v-icon>
+                <v-icon icon="mdi-map-marker-outline" size="16" class="mr-1"></v-icon>
                 {{ profile.location }}
               </div>
 
               <p
-                class="donator-wares mb-4"
+                class="text-body-2 text-medium-emphasis leading-relaxed mb-4"
                 style="flex-grow: 1; white-space: normal; overflow-wrap: break-word;"
               >
                 {{ profile.waresDescription }}
@@ -91,9 +109,10 @@
                 :href="withHttps(profile.website)"
                 target="_blank"
                 rel="noopener"
-                class="visit-link d-flex align-center"
+                class="text-caption font-weight-bold d-flex align-center"
+                style="color: #0B4F6C; text-decoration: none;"
               >
-                <v-icon icon="mdi-feather" size="14" class="mr-1"></v-icon>
+                <v-icon icon="mdi-open-in-new" size="14" class="mr-1"></v-icon>
                 Visit Website
               </a>
             </v-card-text>
@@ -203,92 +222,19 @@ onMounted(fetchProfiles)
 
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
-
-.donator-name {
-  font-family: 'Cinzel', 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #3d2413;
-  line-height: 1.3;
-}
-
-.name-rule {
-  height: 2px;
-  width: 56px;
-  margin-left: 46px;
-  background: linear-gradient(90deg, #a8792f, transparent);
-}
-
-.donator-location {
-  font-family: 'EB Garamond', serif;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: #6e5433;
-}
-
-.donator-wares {
-  font-family: 'EB Garamond', serif;
-  font-size: 1.02rem;
-  line-height: 1.55;
-  color: #4b2b17;
-}
-
-.visit-link {
-  font-family: 'EB Garamond', serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #6e1f2b;
-  text-decoration: none;
-  width: fit-content;
-  border-bottom: 1px solid rgba(110, 31, 43, 0.35);
-  padding-bottom: 1px;
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-.visit-link:hover {
-  color: #8a2836;
-  border-color: rgba(110, 31, 43, 0.7);
-}
-
-.wax-seal {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  margin-right: 12px;
-  font-family: 'Cinzel', serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #f4e6c2;
-  background: radial-gradient(circle at 32% 28%, #9c2f3d, #6e1f2b 65%, #4c141f 100%);
-  box-shadow:
-    0 2px 4px rgba(60, 10, 15, 0.4),
-    inset 0 0 3px rgba(255, 220, 180, 0.35);
-}
-
 .parchment-card {
   position: relative;
   overflow: hidden;
   min-height: 260px;
-  border: 1px solid #a8792f !important;
-  border-radius: 3px !important;
+  border: 1px solid #b98b4d !important;
+  border-radius: 4px !important;
   background:
-    radial-gradient(
-      ellipse at 20% 15%,
-      rgba(255, 250, 222, 0.55),
-      transparent 45%
-    ),
     linear-gradient(
       135deg,
-      rgba(112, 70, 28, 0.18),
-      transparent 20%,
-      transparent 76%,
-      rgba(112, 70, 28, 0.16)
+      rgba(112, 70, 28, 0.16),
+      transparent 18%,
+      transparent 78%,
+      rgba(112, 70, 28, 0.14)
     ),
     linear-gradient(
       90deg,
@@ -299,13 +245,13 @@ onMounted(fetchProfiles)
     ),
     #e4c98f !important;
   box-shadow:
-    0 7px 14px rgba(67, 39, 15, 0.22),
-    inset 0 0 22px rgba(111, 64, 19, 0.22),
-    inset 0 0 3px rgba(255, 244, 192, 0.85) !important;
+    0 7px 12px rgba(67, 39, 15, 0.2),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
   transform: rotate(-0.35deg);
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Alternating slight rotations make the cards feel handmade. */
@@ -314,12 +260,11 @@ onMounted(fetchProfiles)
 }
 
 .parchment-card:hover {
-  transform: translateY(-5px) rotate(0deg);
+  transform: translateY(-4px) rotate(0deg);
   box-shadow:
-    0 16px 26px rgba(67, 39, 15, 0.28),
-    0 0 18px rgba(184, 118, 44, 0.25),
-    inset 0 0 22px rgba(111, 64, 19, 0.22),
-    inset 0 0 3px rgba(255, 244, 192, 0.85) !important;
+    0 13px 22px rgba(67, 39, 15, 0.25),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
 }
 
 .parchment-content {
@@ -453,6 +398,34 @@ onMounted(fetchProfiles)
   transform: rotate(-42deg);
 }
 
+.elevation-hover:hover {
+  transform: translateY(-4px) rotate(0deg);
+  box-shadow:
+    0 13px 22px rgba(67, 39, 15, 0.25),
+    inset 0 0 18px rgba(111, 64, 19, 0.2),
+    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+}
+
+/*
+  PNG VERSION STYLES
+
+  These styles are already included so that switching to the PNG markup
+  only requires uncommenting the markup above.
+*/
+.parchment-image-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.parchment-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
 .donator-banner-placeholder {
   display: flex;
   justify-content: center;
@@ -481,6 +454,11 @@ onMounted(fetchProfiles)
   .donator-banner-image {
     min-height: 90px;
   }
+}
+
+.elevation-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
 }
 
 .ivy-divider {
