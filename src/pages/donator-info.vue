@@ -84,40 +84,35 @@
             </div>
            
 
-            <v-card-text class="parchment-content pa-6 d-flex flex-column">
-              <!-- Donator name -->
-              <h3 class="donator-name mb-2">
+            <v-card-text class="parchment-content pa-6">
+              <h3 class="donator-name mb-3">
                 {{ profile.socialMediaName || 'Anonymous Donator' }}
               </h3>
 
-              <!-- Location -->
-              <div
-                v-if="profile.location"
-                class="donator-location d-flex align-center mb-3"
-              >
-                <v-icon icon="mdi-map-marker-outline" size="16" class="mr-1"></v-icon>
-                {{ profile.location }}
-              </div>
-
-              <!-- Description -->
-              <p
-                class="donator-description mb-4"
-                style="flex-grow: 1; white-space: normal; overflow-wrap: break-word;"
-              >
+              <p class="donator-description mb-4">
                 {{ profile.waresDescription }}
               </p>
 
-              <!-- Website link -->
-              <a
-                v-if="profile.website"
-                :href="withHttps(profile.website)"
-                target="_blank"
-                rel="noopener"
-                class="donator-website d-flex align-center"
-              >
-                <v-icon icon="mdi-open-in-new" size="14" class="mr-1"></v-icon>
-                Visit Website
-              </a>
+              <div class="card-footer">
+                <div
+                  v-if="profile.location"
+                  class="donator-location"
+                >
+                  <v-icon icon="mdi-map-marker-outline" size="16"></v-icon>
+                  <span>{{ profile.location }}</span>
+                </div>
+
+                <a
+                  v-if="profile.website"
+                  :href="withHttps(profile.website)"
+                  target="_blank"
+                  rel="noopener"
+                  class="donator-website"
+                >
+                  <v-icon icon="mdi-open-in-new" size="14"></v-icon>
+                  <span>Visit Website</span>
+                </a>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -278,8 +273,22 @@ onMounted(fetchProfiles)
 .parchment-content {
   position: relative;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
   min-height: 260px;
   color: #4b2b17;
+  text-align: center;
+}
+
+.card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 28px;
+  margin-top: auto;
+  text-align: left;
 }
 
 /* Soft, uneven-looking parchment corners. */
@@ -490,49 +499,91 @@ onMounted(fetchProfiles)
 
 /* Donator name */
 .donator-name {
+  margin: 0;
   color: #4b2b17;
   font-family: "Eagle Lake", Georgia, serif;
-  font-size: 1.25rem;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
   font-weight: 400;
   line-height: 1.35;
   text-align: center;
-  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(255, 239, 174, 0.45);
 }
 
 /* Location */
+.donator-location,
+.donator-website {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 48%;
+  line-height: 1.3;
+}
+
 .donator-location {
+  justify-content: flex-start;
   color: #73512c;
-  font-family: "Cinzel", Georgia, serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: 0.025em;
+  font-family: Georgia, serif;
+  font-size: 0.8rem;
+  text-align: left;
 }
 
 /* Description */
 .donator-description {
+  flex: 1;
+  margin-top: 0;
   color: #5b4025;
   font-family: "IM Fell English", Georgia, serif;
   font-size: 1.08rem;
-  font-weight: 400;
-  text-align: center;
   line-height: 1.5;
+  text-align: center;
 }
 
 /* Website link */
 .donator-website {
-  color: #345b38 !important;
-  font-family: "Cinzel", Georgia, serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.035em;
+  justify-content: flex-end;
+  margin-left: auto;
+  color: #345b38;
+  font-family: Georgia, serif;
+  font-size: 0.75rem;
+  text-align: right;
   text-decoration: none;
   text-transform: uppercase;
-  text-align: left;
 }
 
 .donator-website:hover {
-  color: #1f3d26 !important;
+  color: #1f3d26;
   text-decoration: underline;
+}
+
+.donator-location span,
+.donator-website span {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .parchment-content {
+    min-height: 250px;
+    padding: 1.25rem !important;
+  }
+
+  .card-footer {
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .donator-location,
+  .donator-website {
+    max-width: 46%;
+    font-size: 0.7rem;
+  }
+
+  .donator-website {
+    text-transform: none;
+  }
+
+  .donator-description {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
 }
 </style>
