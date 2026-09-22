@@ -9,14 +9,21 @@
       />
     </div>
 
-        <!-- Fantasy ivy divider -->
-    <div class="ivy-divider" aria-hidden="true">
-      <img
-        src="/images/ivy-divider.png"
-        alt=""
-        class="ivy-divider-image"
-      />
-    </div>
+
+    <!-- Symmetrical fantasy ivy divider -->
+      <div class="ivy-divider-sides" aria-hidden="true">
+        <img
+          src="/images/ivy-divider-2.png"
+          alt=""
+          class="ivy-side ivy-side-left"
+        />
+
+        <img
+          src="/images/ivy-divider-2.png"
+          alt=""
+          class="ivy-side ivy-side-right"
+        />
+      </div>
 
     <!-- Loading state -->
     <div v-if="loading && profiles.length === 0" class="d-flex justify-center py-12">
@@ -210,25 +217,35 @@ onMounted(fetchProfiles)
   object-fit: contain;
 }
 
-/* Ivy divider */
-.ivy-divider {
+/* Ivy decorations positioned at the far left and right */
+.ivy-divider-sides {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
+  min-height: 130px;
   margin: 0 auto 2.5rem;
   padding: 0;
   overflow: visible;
 }
 
-.ivy-divider-image {
+.ivy-side {
   display: block;
-  width: 115%;
-  max-width: none;
+  width: 42%;
+  max-width: 520px;
   height: auto;
-  max-height: 110px;
-  margin-left: -7.5%;
   object-fit: contain;
+}
+
+/* Left ivy grows inward from the left edge. */
+.ivy-side-left {
+  transform-origin: left center;
+}
+
+/* Right ivy is mirrored so the two sides balance. */
+.ivy-side-right {
+  transform: scaleX(-1);
+  transform-origin: right center;
 }
 
 /* Outer parchment card */
@@ -502,11 +519,15 @@ onMounted(fetchProfiles)
 }
 
 @media (max-width: 600px) {
-  .donator-banner-placeholder {
-    min-height: 100px;
+  .ivy-divider-sides {
+    min-height: 80px;
     margin-bottom: 2rem;
-    padding: 0;
   }
+
+  .ivy-side {
+    width: 46%;
+  }
+}
 
   .donator-banner-image {
     min-height: 90px;
