@@ -6,9 +6,9 @@
   (or just overwrite the PNGs in public/castle/). You should not need to touch
   this file for an art swap.
 
-  Every piece of artwork below is marked  <!-- ART: name -->  so it is easy to
-  find. The text of the page goes into the default slot (the parchment panel).
--->
+  Every piece of artwork below is marked  
+  <!-- ART: name  so it is easy to
+  find. The text of the page goes into the default slot (the parchment panel).--> 
 <template>
   <div class="castle">
     <!-- ART: sky-clouds + sun (background scene) -->
