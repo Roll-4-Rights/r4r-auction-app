@@ -85,32 +85,35 @@
            
 
             <v-card-text class="parchment-content pa-6 d-flex flex-column">
-              <h3 class="text-h6 font-weight-black text-black mb-2">
+              <!-- Donator name -->
+              <h3 class="donator-name mb-2">
                 {{ profile.socialMediaName || 'Anonymous Donator' }}
               </h3>
 
+              <!-- Location -->
               <div
                 v-if="profile.location"
-                class="d-flex align-center mb-3 text-medium-emphasis text-body-2"
+                class="donator-location d-flex align-center mb-3"
               >
                 <v-icon icon="mdi-map-marker-outline" size="16" class="mr-1"></v-icon>
                 {{ profile.location }}
               </div>
 
+              <!-- Description -->
               <p
-                class="text-body-2 text-medium-emphasis leading-relaxed mb-4"
+                class="donator-description mb-4"
                 style="flex-grow: 1; white-space: normal; overflow-wrap: break-word;"
               >
                 {{ profile.waresDescription }}
               </p>
 
+              <!-- Website link -->
               <a
                 v-if="profile.website"
                 :href="withHttps(profile.website)"
                 target="_blank"
                 rel="noopener"
-                class="text-caption font-weight-bold d-flex align-center"
-                style="color: #0B4F6C; text-decoration: none;"
+                class="donator-website d-flex align-center"
               >
                 <v-icon icon="mdi-open-in-new" size="14" class="mr-1"></v-icon>
                 Visit Website
@@ -477,5 +480,53 @@ onMounted(fetchProfiles)
   height: auto;
   max-height: 100px;
   object-fit: contain;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+/* Donator name */
+.donator-name {
+  color: #4b2b17;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1.25;
+  text-shadow: 0 1px 0 rgba(255, 239, 174, 0.45);
+}
+
+/* Location */
+.donator-location {
+  color: #73512c;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Description */
+.donator-description {
+  color: #5b4025;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Website link */
+.donator-website {
+  color: #345b38 !important;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.donator-website:hover {
+  color: #1f3d26 !important;
+  text-decoration: underline;
 }
 </style>
