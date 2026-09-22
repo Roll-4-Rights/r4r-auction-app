@@ -70,10 +70,20 @@
   </div>
 </template>
 
+
+
+
+
+
 <script setup lang="ts">
 // All artwork settings (files + sizes) live in this one CSS file.
 import './castle-art.css'
 </script>
+
+
+
+
+
 
 <style>
 /* Class names all start with "castle" so nothing here can clash with the rest
