@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://api2.roll4rights.duckdns.org/api'
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`
 
 export const apiService = {
   async fetchCampaignProgress() {
