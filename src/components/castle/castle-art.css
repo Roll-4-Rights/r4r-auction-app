@@ -27,6 +27,9 @@
   --art-sun: url('/castle/sun.png');                     /* desktop only */
   --art-sun-w: 24;     --art-sun-h: 24;
 
+  --art-hills: url('/castle/hills.png');                 /* distant rolling hills; tiles left-to-right */
+  --art-hills-w: 128; --art-hills-h: 48;
+
   /* ---- Towers (drawn twice: the right one is mirrored) --------------- */
   --art-tower-cap: url('/castle/tower-cap.png');         /* battlements + top of the tower */
   --art-tower-cap-w: 32;  --art-tower-cap-h: 24;

@@ -1,95 +1,91 @@
 <!--
-  CastleFrame — wraps page content in a pixel-art castle.
+  CastleFrame — wraps page content in a pixel-art castle, standing in a
+  landscape (sky, distant hills, grass) that stretches the full width of
+  whatever container this is placed in.
 
   THIS FILE IS LAYOUT ONLY. It never names an image file or an image size;
   all of that lives in castle-art.css. To change the artwork, edit that file
   (or just overwrite the PNGs in public/castle/). You should not need to touch
   this file for an art swap.
 
-  Every piece of artwork below is marked  
-  <!-- ART: name  so it is easy to
-  find. The text of the page goes into the default slot (the parchment panel).--> 
+  Every piece of artwork below is marked  <!-- ART: name -->  so it is easy to
+  find. The text of the page goes into the default slot (the parchment panel).
+-->
 <template>
-  <div class="castle">
-    <!-- ART: sky-clouds + sun (background scene) -->
-    <div class="castle__scene" aria-hidden="true">
-      <div class="castle__sun"></div>
+  <div class="castle-landscape">
+    <!-- ART: sky-clouds + sun + hills. Spans the FULL width, behind everything. -->
+    <div class="castle-landscape__backdrop" aria-hidden="true">
+      <div class="castle-landscape__sun"></div>
+      <div class="castle-landscape__hills"></div>
     </div>
 
-    <!-- LEFT TOWER -->
-    <div class="castle__tower castle__tower--left" aria-hidden="true">
-      <div class="castle__tower-art">
-        <!-- ART: tower-cap -->
-        <div class="castle__tower-cap"></div>
-        <!-- ART: tower-body (tiles), tower-window, tower-ivy, tower-banner -->
-        <div class="castle__tower-body">
-          <div class="castle__tower-window castle__tower-window--a"></div>
-          <div class="castle__tower-window castle__tower-window--b"></div>
-          <div class="castle__tower-window castle__tower-window--c"></div>
-          <div class="castle__tower-ivy"></div>
+    <!-- The castle itself: towers + wall, centred on top of the backdrop. -->
+    <div class="castle">
+      <!-- LEFT TOWER -->
+      <div class="castle__tower castle__tower--left" aria-hidden="true">
+        <div class="castle__tower-art">
+          <!-- ART: tower-cap -->
+          <div class="castle__tower-cap"></div>
+          <!-- ART: tower-body (tiles), tower-window, tower-ivy, tower-banner -->
+          <div class="castle__tower-body">
+            <div class="castle__tower-window castle__tower-window--a"></div>
+            <div class="castle__tower-window castle__tower-window--b"></div>
+            <div class="castle__tower-window castle__tower-window--c"></div>
+            <div class="castle__tower-ivy"></div>
+          </div>
+          <div class="castle__tower-banner"></div>
         </div>
-        <div class="castle__tower-banner"></div>
+      </div>
+
+      <!-- CENTRE: the wall, with the page content inside -->
+      <div class="castle__wall">
+        <!-- ART: wall-top (battlements) -->
+        <div class="castle__wall-top" aria-hidden="true"></div>
+        <!-- ART: wall-body (tiles) -->
+        <div class="castle__wall-body">
+          <!-- ART: panel-frame (wooden frame) + parchment (paper) -->
+          <div class="castle__panel">
+            <slot />
+          </div>
+          <!-- ART: torch, gate, torch -->
+          <div class="castle__gate-row" aria-hidden="true">
+            <div class="castle__torch"></div>
+            <div class="castle__gate"></div>
+            <div class="castle__torch"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT TOWER (same art, mirrored by the CSS) -->
+      <div class="castle__tower castle__tower--right" aria-hidden="true">
+        <div class="castle__tower-art">
+          <div class="castle__tower-cap"></div>
+          <div class="castle__tower-body">
+            <div class="castle__tower-window castle__tower-window--a"></div>
+            <div class="castle__tower-window castle__tower-window--b"></div>
+            <div class="castle__tower-window castle__tower-window--c"></div>
+            <div class="castle__tower-ivy"></div>
+          </div>
+          <div class="castle__tower-banner"></div>
+        </div>
       </div>
     </div>
 
-    <!-- CENTRE: the wall, with the page content inside -->
-    <div class="castle__wall">
-      <!-- ART: wall-top (battlements) -->
-      <div class="castle__wall-top" aria-hidden="true"></div>
-      <!-- ART: wall-body (tiles) -->
-      <div class="castle__wall-body">
-        <!-- ART: panel-frame (wooden frame) + parchment (paper) -->
-        <div class="castle__panel">
-          <slot />
-        </div>
-        <!-- ART: torch, gate, torch -->
-        <div class="castle__gate-row" aria-hidden="true">
-          <div class="castle__torch"></div>
-          <div class="castle__gate"></div>
-          <div class="castle__torch"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT TOWER (same art, mirrored by the CSS) -->
-    <div class="castle__tower castle__tower--right" aria-hidden="true">
-      <div class="castle__tower-art">
-        <div class="castle__tower-cap"></div>
-        <div class="castle__tower-body">
-          <div class="castle__tower-window castle__tower-window--a"></div>
-          <div class="castle__tower-window castle__tower-window--b"></div>
-          <div class="castle__tower-window castle__tower-window--c"></div>
-          <div class="castle__tower-ivy"></div>
-        </div>
-        <div class="castle__tower-banner"></div>
-      </div>
-    </div>
-
-    <!-- ART: grass (ground strip along the bottom) -->
-    <div class="castle__ground" aria-hidden="true"></div>
+    <!-- ART: grass. Spans the FULL width, in front of everything, at the bottom. -->
+    <div class="castle-landscape__grass" aria-hidden="true"></div>
   </div>
 </template>
-
-
-
-
-
 
 <script setup lang="ts">
 // All artwork settings (files + sizes) live in this one CSS file.
 import './castle-art.css'
 </script>
 
-
-
-
-
-
 <style>
 /* Class names all start with "castle" so nothing here can clash with the rest
    of the site. Sizes are written as (art pixels * --px). */
 
-.castle {
+.castle-landscape {
   /* SIZE OF ONE ART PIXEL ON SCREEN. Keep it a whole number so the pixel art
      stays sharp. Phones do NOT shrink this; they trim the towers instead. */
   --px: 4px;
@@ -97,38 +93,35 @@ import './castle-art.css'
   --castle-sky-top: #79c4f2;
   --castle-sky-bottom: #cfeefc;
   --castle-tower-visible: var(--castle-tower-visible-phone);
-  --castle-wall-pad: 3;   /* stone showing around the panel, in art pixels */
-  --castle-panel-pad: 3;  /* space between the frame and the text */
+  --castle-wall-pad: 3;    /* stone showing around the panel, in art pixels */
+  --castle-panel-pad: 3;   /* space between the frame and the text */
+  --castle-max-width: 1000px; /* widest the castle itself ever gets; the
+                                  landscape fills whatever space is left over */
 
   position: relative;
-  display: grid;
-  grid-template-columns:
-    calc(var(--castle-tower-visible) * var(--px))
-    minmax(0, 1fr)
-    calc(var(--castle-tower-visible) * var(--px));
+  overflow: hidden;
+  isolation: isolate;
+  image-rendering: pixelated;
   padding-top: calc(6 * var(--px));
   padding-bottom: calc((var(--art-grass-h) - 4) * var(--px));
-  isolation: isolate;
-  overflow: hidden;
-  image-rendering: pixelated;
 }
 
 @media (min-width: 600px) {
-  .castle {
+  .castle-landscape {
     --castle-tower-visible: var(--castle-tower-visible-tablet);
     --castle-wall-pad: 6;
     --castle-panel-pad: 5;
   }
 }
 @media (min-width: 960px) {
-  .castle {
+  .castle-landscape {
     /* Wide screens show the whole tower. */
     --castle-tower-visible: var(--art-tower-body-w);
   }
 }
 
-/* ---- Sky ---------------------------------------------------------------- */
-.castle__scene {
+/* ---- Backdrop: sky + hills, full width, behind everything ---------------- */
+.castle-landscape__backdrop {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -141,17 +134,49 @@ import './castle-art.css'
     calc(var(--art-clouds-w) * var(--px)) calc(var(--art-clouds-h) * var(--px)),
     100% 100%;
 }
-.castle__sun {
+.castle-landscape__hills {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc((var(--art-grass-h) - 3) * var(--px)); /* sits just above the grass */
+  height: calc(var(--art-hills-h) * var(--px));
+  background: var(--art-hills) repeat-x bottom left /
+    calc(var(--art-hills-w) * var(--px)) calc(var(--art-hills-h) * var(--px));
+}
+.castle-landscape__sun {
   display: none;
   position: absolute;
-  top: 0;
-  right: calc((var(--castle-tower-visible) + 12) * var(--px));
+  top: calc(4 * var(--px));
+  left: calc(4 * var(--px));
   width: calc(var(--art-sun-w) * var(--px));
   height: calc(var(--art-sun-h) * var(--px));
   background: var(--art-sun) no-repeat 0 0 / 100% 100%;
 }
 @media (min-width: 960px) {
-  .castle__sun { display: block; }
+  .castle-landscape__sun { display: block; }
+}
+
+/* ---- Grass: full width, in front of everything, at the very bottom ------- */
+.castle-landscape__grass {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+  height: calc(var(--art-grass-h) * var(--px));
+  background: var(--art-grass) repeat-x 0 0 /
+    calc(var(--art-grass-w) * var(--px)) calc(var(--art-grass-h) * var(--px));
+}
+
+/* ---- The castle itself: centred, capped at --castle-max-width ------------ */
+.castle {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns:
+    calc(var(--castle-tower-visible) * var(--px))
+    minmax(0, 1fr)
+    calc(var(--castle-tower-visible) * var(--px));
+  max-width: var(--castle-max-width);
+  margin: 0 auto;
 }
 
 /* ---- Towers ------------------------------------------------------------- */
@@ -159,7 +184,6 @@ import './castle-art.css'
   position: relative;
   grid-row: 1;
   overflow: hidden;   /* this is what TRIMS the tower on small screens */
-  z-index: 1;
 }
 .castle__tower--left  { grid-column: 1; }
 .castle__tower--right { grid-column: 3; }
@@ -232,7 +256,6 @@ import './castle-art.css'
   grid-column: 2;
   grid-row: 1;
   position: relative;
-  z-index: 2;         /* keeps the wall in front of the sky */
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -305,17 +328,6 @@ import './castle-art.css'
 }
 @keyframes castle-torch {
   to { background-position: calc(var(--art-torch-w) * var(--art-torch-frames) * var(--px) * -1) 0; }
-}
-
-/* ---- Ground (drawn in front so the bottom of the walls is hidden) --------- */
-.castle__ground {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  z-index: 3;
-  pointer-events: none;
-  height: calc(var(--art-grass-h) * var(--px));
-  background: var(--art-grass) repeat-x 0 0 /
-    calc(var(--art-grass-w) * var(--px)) calc(var(--art-grass-h) * var(--px));
 }
 
 @media (prefers-reduced-motion: reduce) {

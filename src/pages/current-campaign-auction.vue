@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-6 py-md-10 px-2 px-sm-6" max-width="900">
+  <v-container fluid class="py-6 py-md-10 px-0">
 
     <!-- The castle artwork lives in src/components/castle/ -->
     <CastleFrame>
