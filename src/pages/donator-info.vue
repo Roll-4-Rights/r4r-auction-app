@@ -42,54 +42,18 @@
           sm="6"
           md="4"
         >
-                    <v-card
+          <v-card
             class="h-100 parchment-card elevation-hover"
             elevation="0"
           >
-            <!-- CSS parchment decoration: ACTIVE VERSION -->
-            <!-- <div class="parchment-decoration" aria-hidden="true">
-              <span class="parchment-curl parchment-curl-top-left"></span>
-              <span class="parchment-curl parchment-curl-top-right"></span>
-
-              <span class="ivy-vine ivy-vine-left"></span>
-              <span class="ivy-vine ivy-vine-bottom"></span>
-              <span class="ivy-leaf leaf-1"></span>
-              <span class="ivy-leaf leaf-2"></span>
-              <span class="ivy-leaf leaf-3"></span>
-              <span class="ivy-leaf leaf-4"></span>
-              <span class="ivy-leaf leaf-5"></span>
-            </div> -->
-
-            <!--
-              PNG PARCHMENT VERSION: CURRENTLY ENABLED
-
-              To use your own parchment image instead:
-
-              1. Comment out the entire "CSS parchment decoration" block above.
-              2. Uncomment the "PNG parchment decoration" block below.
-              3. Add your image here:
-                public/images/donator-parchment.png
-
-              The PNG should have a transparent background and should include the
-              parchment edges and ivy decoration, but not the profile text.
-            -->
-
-            
-            <div class="parchment-image-layer" aria-hidden="true">
-              <img
-                src="/images/donator-parchment.png"
-                alt=""
-                class="parchment-image"
-              />
-            </div>
-           
+            <!-- parchment decoration -->
 
             <v-card-text class="parchment-content pa-6">
               <h3 class="donator-name mb-3">
                 {{ profile.socialMediaName || 'Anonymous Donator' }}
               </h3>
 
-              <p class="donator-description mb-4">
+              <p class="donator-description">
                 {{ profile.waresDescription }}
               </p>
 
@@ -220,15 +184,57 @@ onMounted(fetchProfiles)
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=IM+Fell+English:ital@0;1&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap');
+.elevation-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.06) !important;
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&display=swap');
+/* Banner image at top */
+.donator-banner-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 150px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1rem;
+}
 
+.donator-banner-image {
+  display: block;
+  width: min(100%, 400px);
+  height: auto;
+  min-height: 120px;
+  object-fit: contain;
+}
+
+/* Ivy divider */
+.ivy-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.ivy-divider-image {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+/* Outer parchment card */
 .parchment-card {
   position: relative;
   overflow: hidden;
   min-height: 260px;
+  height: 100%;
   border: 1px solid #b98b4d !important;
   border-radius: 4px !important;
   background:
@@ -257,7 +263,7 @@ onMounted(fetchProfiles)
     box-shadow 0.2s ease;
 }
 
-/* Alternating slight rotations make the cards feel handmade. */
+/* Alternate rotation for hand-made feel */
 .parchment-card:nth-child(even) {
   transform: rotate(0.35deg);
 }
@@ -270,28 +276,7 @@ onMounted(fetchProfiles)
     inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
 }
 
-.parchment-content {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  min-height: 260px;
-  color: #4b2b17;
-  text-align: center;
-}
-
-.card-footer {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  min-height: 28px;
-  margin-top: auto;
-  text-align: left;
-}
-
-/* Soft, uneven-looking parchment corners. */
+/* Parchment corners and decorative curls */
 .parchment-card::before,
 .parchment-card::after {
   content: "";
@@ -317,7 +302,6 @@ onMounted(fetchProfiles)
   box-shadow: -7px -7px 0 rgba(255, 239, 174, 0.22);
 }
 
-/* Decorative rolled/curl marks at the top corners. */
 .parchment-decoration {
   position: absolute;
   inset: 0;
@@ -346,7 +330,7 @@ onMounted(fetchProfiles)
   transform: rotate(35deg);
 }
 
-/* Base vine shape. */
+/* Ivy vines and leaves */
 .ivy-vine {
   position: absolute;
   display: block;
@@ -357,7 +341,6 @@ onMounted(fetchProfiles)
   transform-origin: left center;
 }
 
-/* Ivy climbing the left edge. */
 .ivy-vine-left {
   left: 5px;
   bottom: 28px;
@@ -365,7 +348,6 @@ onMounted(fetchProfiles)
   transform: rotate(-64deg);
 }
 
-/* Ivy trailing along the bottom edge. */
 .ivy-vine-bottom {
   right: 12px;
   bottom: 9px;
@@ -373,7 +355,6 @@ onMounted(fetchProfiles)
   transform: rotate(-4deg);
 }
 
-/* Individual leaves. */
 .ivy-leaf {
   position: absolute;
   z-index: 3;
@@ -415,20 +396,95 @@ onMounted(fetchProfiles)
   transform: rotate(-42deg);
 }
 
-.elevation-hover:hover {
-  transform: translateY(-4px) rotate(0deg);
-  box-shadow:
-    0 13px 22px rgba(67, 39, 15, 0.25),
-    inset 0 0 18px rgba(111, 64, 19, 0.2),
-    inset 0 0 3px rgba(255, 244, 192, 0.8) !important;
+/* Main card content */
+.parchment-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 4.5rem !important;
+  color: #4b2b17;
+  text-align: center;
 }
 
-/*
-  PNG VERSION STYLES
+.donator-name {
+  margin: 0;
+  color: #4b2b17;
+  font-family: "Eagle Lake", Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
 
-  These styles are already included so that switching to the PNG markup
-  only requires uncommenting the markup above.
-*/
+.donator-description {
+  flex: 1;
+  margin: 0;
+  color: #5b4025;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.card-footer {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.25rem;
+  left: 1.5rem;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 26px;
+  width: auto;
+}
+
+.donator-location,
+.donator-website {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 48%;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+.donator-location {
+  justify-content: flex-start;
+  color: #73512c;
+  font-family: Georgia, serif;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.donator-website {
+  justify-content: flex-end;
+  margin-left: auto;
+  color: #345b38 !important;
+  font-family: Georgia, serif;
+  font-size: 0.75rem;
+  text-align: right;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.donator-website:hover {
+  color: #1f3d26 !important;
+  text-decoration: underline;
+}
+
+.donator-location span,
+.donator-website span {
+  overflow-wrap: anywhere;
+}
+
+/* Optional PNG-override styles for a future art image */
 .parchment-image-layer {
   position: absolute;
   inset: 0;
@@ -443,24 +499,6 @@ onMounted(fetchProfiles)
   object-fit: fill;
 }
 
-.donator-banner-placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 150px;
-  margin: 0 auto 2.5rem;
-  padding: 0 1rem;
-}
-
-.donator-banner-image {
-  display: block;
-  width: min(100%, 400px);
-  height: auto;
-  min-height: 120px;
-  object-fit: contain;
-}
-
 @media (max-width: 600px) {
   .donator-banner-placeholder {
     min-height: 100px;
@@ -471,104 +509,25 @@ onMounted(fetchProfiles)
   .donator-banner-image {
     min-height: 90px;
   }
-}
 
-.elevation-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
-}
+  .ivy-divider {
+    padding: 0 0.25rem;
+  }
 
-.ivy-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 0 auto 2.5rem;
-  padding: 0 0.5rem;
-}
+  .parchment-card {
+    min-height: 250px;
+  }
 
-.ivy-divider-image {
-  display: block;
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
-  max-height: 100px;
-  object-fit: contain;
-}
-
-
-/* Donator name */
-.donator-name {
-  margin: 0;
-  color: #4b2b17;
-  font-family: "Eagle Lake", Georgia, serif;
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
-  font-weight: 400;
-  line-height: 1.35;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(255, 239, 174, 0.45);
-}
-
-/* Location */
-.donator-location,
-.donator-website {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  max-width: 48%;
-  line-height: 1.3;
-}
-
-.donator-location {
-  justify-content: flex-start;
-  color: #73512c;
-  font-family: Georgia, serif;
-  font-size: 0.8rem;
-  text-align: left;
-}
-
-/* Description */
-.donator-description {
-  flex: 1;
-  margin-top: 0;
-  color: #5b4025;
-  font-family: "IM Fell English", Georgia, serif;
-  font-size: 1.08rem;
-  line-height: 1.5;
-  text-align: center;
-}
-
-/* Website link */
-.donator-website {
-  justify-content: flex-end;
-  margin-left: auto;
-  color: #345b38;
-  font-family: Georgia, serif;
-  font-size: 0.75rem;
-  text-align: right;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.donator-website:hover {
-  color: #1f3d26;
-  text-decoration: underline;
-}
-
-.donator-location span,
-.donator-website span {
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 600px) {
   .parchment-content {
     min-height: 250px;
-    padding: 1.25rem !important;
+    padding: 1.25rem 1.25rem 4.25rem !important;
   }
 
   .card-footer {
-    align-items: flex-start;
-    gap: 0.6rem;
+    right: 1.25rem;
+    bottom: 1rem;
+    left: 1.25rem;
+    gap: 0.5rem;
   }
 
   .donator-location,
