@@ -9,6 +9,15 @@
       />
     </div>
 
+        <!-- Fantasy ivy divider -->
+    <div class="ivy-divider" aria-hidden="true">
+      <img
+        src="/images/ivy-divider.png"
+        alt=""
+        class="ivy-divider-image"
+      />
+    </div>
+
     <!-- Loading state -->
     <div v-if="loading && profiles.length === 0" class="d-flex justify-center py-12">
       <v-progress-circular indeterminate color="#0B4F6C" size="48"></v-progress-circular>
@@ -211,5 +220,23 @@ onMounted(fetchProfiles)
 .elevation-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+.ivy-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.ivy-divider-image {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
 }
 </style>
