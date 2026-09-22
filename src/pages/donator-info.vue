@@ -495,6 +495,7 @@ onMounted(fetchProfiles)
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.35;
+  text-align: center;
   letter-spacing: 0.02em;
 }
 
@@ -504,6 +505,7 @@ onMounted(fetchProfiles)
   font-family: "Cinzel", Georgia, serif;
   font-size: 0.78rem;
   font-weight: 600;
+  text-align: center;
   letter-spacing: 0.025em;
 }
 
@@ -513,6 +515,7 @@ onMounted(fetchProfiles)
   font-family: "IM Fell English", Georgia, serif;
   font-size: 1.08rem;
   font-weight: 400;
+  text-align: center;
   line-height: 1.5;
 }
 
@@ -525,6 +528,7 @@ onMounted(fetchProfiles)
   letter-spacing: 0.035em;
   text-decoration: none;
   text-transform: uppercase;
+  text-align: left;
 }
 
 .donator-website:hover {
