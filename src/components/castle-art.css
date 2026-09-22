@@ -1,0 +1,88 @@
+/* ============================================================================
+   CASTLE ART SETTINGS
+   ----------------------------------------------------------------------------
+   This is the ONLY file you edit when real artwork arrives.
+   CastleFrame.vue and GoldHoard.vue never mention a file name or an image size.
+
+   Every sprite has three settings:
+     --art-NAME        the image file (all files live in  public/castle/ )
+     --art-NAME-w      its width  in ART PIXELS  (the PNG's own size)
+     --art-NAME-h      its height in ART PIXELS
+
+   To swap in real art:
+     1. Save the artist's PNG into  public/castle/  using the SAME file name.
+     2. If the new image has a different size, change its -w / -h numbers below.
+     3. Done. Nothing else in the code needs to change.
+
+   "Art pixel" = one pixel of the PNG. On screen each one is drawn 4 px wide
+   (set by --px in CastleFrame.vue), so a 32 px wide tower shows as 128 px.
+   See ART-GUIDE.md for what each sprite should look like.
+   ========================================================================== */
+
+:root {
+  /* ---- Sky ---------------------------------------------------------- */
+  --art-clouds: url('/castle/sky-clouds.png');           /* tiles left-to-right */
+  --art-clouds-w: 96;  --art-clouds-h: 40;
+
+  --art-sun: url('/castle/sun.png');                     /* desktop only */
+  --art-sun-w: 24;     --art-sun-h: 24;
+
+  /* ---- Towers (drawn twice: the right one is mirrored) --------------- */
+  --art-tower-cap: url('/castle/tower-cap.png');         /* battlements + top of the tower */
+  --art-tower-cap-w: 32;  --art-tower-cap-h: 24;
+
+  --art-tower-body: url('/castle/tower-body.png');       /* stone; tiles top-to-bottom */
+  --art-tower-body-w: 32; --art-tower-body-h: 32;
+
+  --art-tower-ivy: url('/castle/tower-ivy.png');         /* transparent ivy; tiles top-to-bottom */
+  --art-tower-ivy-w: 32;  --art-tower-ivy-h: 64;
+
+  --art-tower-window: url('/castle/tower-window.png');   /* arrow slit; 3 per tower */
+  --art-tower-window-w: 8;  --art-tower-window-h: 14;
+
+  --art-tower-banner: url('/castle/tower-banner.png');   /* hangs from the top; desktop only */
+  --art-tower-banner-w: 16; --art-tower-banner-h: 32;
+
+  /* ---- Castle wall and the "great hall" panel ------------------------ */
+  --art-wall-top: url('/castle/wall-top.png');           /* battlement strip; tiles left-to-right */
+  --art-wall-top-w: 12;  --art-wall-top-h: 8;
+
+  --art-wall-body: url('/castle/wall-body.png');         /* stone; tiles both ways */
+  --art-wall-body-w: 32; --art-wall-body-h: 32;
+
+  --art-panel-frame: url('/castle/panel-frame.png');     /* wooden frame around the text (9-slice) */
+  --art-panel-frame-slice: 4;                            /* thickness of the frame edge, in art pixels */
+
+  --art-parchment: url('/castle/parchment.png');         /* paper behind the text; tiles both ways */
+  --art-parchment-w: 16; --art-parchment-h: 16;
+
+  /* ---- Gate, torches, ground ----------------------------------------- */
+  --art-gate: url('/castle/gate.png');
+  --art-gate-w: 40;  --art-gate-h: 44;
+
+  --art-torch: url('/castle/torch.png');                 /* animation strip: frames side by side */
+  --art-torch-w: 16;      /* width of ONE frame */
+  --art-torch-h: 16;
+  --art-torch-frames: 2;  /* how many frames are in the strip */
+
+  --art-grass: url('/castle/grass.png');                 /* tiles left-to-right */
+  --art-grass-w: 16; --art-grass-h: 12;
+
+  /* ---- Gold hoard (used by GoldHoard.vue) ---------------------------- */
+  --art-coin: url('/castle/coin.png');                   /* one coin; any size works */
+  --art-gems: url('/castle/gems.png');                   /* gems side by side in one strip */
+  --art-gems-count: 3;
+  --art-sparkle: url('/castle/sparkle.png');
+  --art-sparkle-w: 7; --art-sparkle-h: 7;
+
+  /* ---- Layout knobs that depend on the art --------------------------- */
+  /* Small screens TRIM the towers instead of shrinking them: only this many
+     art pixels of each tower (measured from the wall) stay visible. */
+  --castle-tower-visible-phone: 8;
+  --castle-tower-visible-tablet: 20;
+  /* Where the arrow slits and the banner sit on a tower, in art pixels from
+     the tower's left edge (before mirroring). */
+  --castle-window-x: 14;
+  --castle-banner-x: 8;
+  --castle-banner-y: 12;
+}

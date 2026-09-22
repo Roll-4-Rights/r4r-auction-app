@@ -1,13 +1,9 @@
 <template>
-  <v-container class="py-10 px-6" max-width="900">
+  <v-container class="py-6 py-md-10 px-2 px-sm-6" max-width="900">
 
-    <!-- Master Layout Card Container — matches donator-information.vue -->
-    <v-card
-      class="rounded-2xl border-0 mb-12"
-      style="background-color: #FFFFFF !important; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03) !important;"
-      elevation="0"
-    >
-      <v-card-text class="pa-6 pa-md-10 fade-in-content" :class="{ 'is-loaded': contentReady }">
+    <!-- The castle artwork lives in src/components/castle/ -->
+    <CastleFrame>
+      <div class="fade-in-content" :class="{ 'is-loaded': contentReady }">
 
         <!-- Campaign Header -->
         <div class="text-left mb-8">
@@ -118,8 +114,8 @@
           </v-btn>
         </div>
 
-      </v-card-text>
-    </v-card>
+      </div>
+    </CastleFrame>
   </v-container>
 </template>
 
@@ -131,6 +127,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import DragonProgressTracker from '@/components/DragonProgressTracker.vue'
+import CastleFrame from '@/components/castle/CastleFrame.vue'
 
 interface Campaign {
   name: string
