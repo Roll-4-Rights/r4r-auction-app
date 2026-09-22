@@ -488,7 +488,7 @@ onMounted(fetchProfiles)
 /* Donator name */
 .donator-name {
   color: #4b2b17;
-  font-family: "Cinzel", Georgia, serif;
+  font-family: "Eagle Lake", Georgia, serif;
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.035em;
