@@ -47,7 +47,7 @@
             elevation="0"
           >
             <!-- CSS parchment decoration: ACTIVE VERSION -->
-            <div class="parchment-decoration" aria-hidden="true">
+            <!-- <div class="parchment-decoration" aria-hidden="true">
               <span class="parchment-curl parchment-curl-top-left"></span>
               <span class="parchment-curl parchment-curl-top-right"></span>
 
@@ -58,7 +58,7 @@
               <span class="ivy-leaf leaf-3"></span>
               <span class="ivy-leaf leaf-4"></span>
               <span class="ivy-leaf leaf-5"></span>
-            </div>
+            </div> -->
 
             <!--
               PNG PARCHMENT VERSION: CURRENTLY DISABLED
@@ -74,7 +74,7 @@
               parchment edges and ivy decoration, but not the profile text.
             -->
 
-            <!--
+            
             <div class="parchment-image-layer" aria-hidden="true">
               <img
                 src="/images/donator-parchment.png"
@@ -82,7 +82,7 @@
                 class="parchment-image"
               />
             </div>
-            -->
+           
 
             <v-card-text class="parchment-content pa-6 d-flex flex-column">
               <h3 class="text-h6 font-weight-black text-black mb-2">
