@@ -10,20 +10,20 @@
     </div>
 
 
-    <!-- Symmetrical fantasy ivy divider -->
-      <div class="ivy-divider-sides" aria-hidden="true">
-        <img
-          src="/images/ivy-divider-2.png"
-          alt=""
-          class="ivy-side ivy-side-left"
-        />
+        <!-- Symmetrical fantasy ivy divider -->
+    <div class="ivy-divider-sides" aria-hidden="true">
+      <img
+        src="/images/ivy-divider-2.png"
+        alt=""
+        class="ivy-side ivy-side-left"
+      />
 
-        <img
-          src="/images/ivy-divider-2.png"
-          alt=""
-          class="ivy-side ivy-side-right"
-        />
-      </div>
+      <img
+        src="/images/ivy-divider-2.png"
+        alt=""
+        class="ivy-side ivy-side-right"
+      />
+    </div>
 
     <!-- Loading state -->
     <div v-if="loading && profiles.length === 0" class="d-flex justify-center py-12">
@@ -217,35 +217,34 @@ onMounted(fetchProfiles)
   object-fit: contain;
 }
 
-/* Ivy decorations positioned at the far left and right */
 .ivy-divider-sides {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: relative;
   width: 100%;
-  min-height: 130px;
+  height: 130px;
   margin: 0 auto 2.5rem;
-  padding: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .ivy-side {
+  position: absolute;
+  top: 50%;
   display: block;
   width: 42%;
   max-width: 520px;
   height: auto;
   object-fit: contain;
+  transform: translateY(-50%);
 }
 
-/* Left ivy grows inward from the left edge. */
+/* Left ivy stays inside the left edge. */
 .ivy-side-left {
-  transform-origin: left center;
+  left: 0;
 }
 
-/* Right ivy is mirrored so the two sides balance. */
+/* Right ivy stays inside the right edge and mirrors inward. */
 .ivy-side-right {
-  transform: scaleX(-1);
-  transform-origin: right center;
+  right: 0;
+  transform: translateY(-50%) scaleX(-1);
 }
 
 /* Outer parchment card */
@@ -520,7 +519,7 @@ onMounted(fetchProfiles)
 
 @media (max-width: 600px) {
   .ivy-divider-sides {
-    min-height: 80px;
+    height: 90px;
     margin-bottom: 2rem;
   }
 
