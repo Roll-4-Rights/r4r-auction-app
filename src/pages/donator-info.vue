@@ -190,7 +190,7 @@ onMounted(fetchProfiles)
 
 .donator-banner-image {
   display: block;
-  width: min(100%, 900px);
+  width: min(100%, 400px);
   height: auto;
   min-height: 120px;
   object-fit: contain;
