@@ -1,5 +1,4 @@
 # Castle art guide
-
 All castle artwork is plain PNG (transparent background) in `public/castle/`.
 Every sprite is listed in `src/components/castle/castle-art.css`. That file is the
 only one to edit when real art arrives; `CastleFrame.vue` never names an image.
